@@ -11,7 +11,7 @@ public class Juego extends InterfaceJuego
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
 	Mago gondolf;
-	
+	Vampiro vampiro;
 	
 	Juego(){
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
