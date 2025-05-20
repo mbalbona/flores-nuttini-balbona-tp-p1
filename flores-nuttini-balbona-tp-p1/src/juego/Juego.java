@@ -12,12 +12,14 @@ public class Juego extends InterfaceJuego
 	private boolean enterPresionado = false;
 	Mago gondolf;
 	Vampiro vampiro;
+	Roca rocas;
+	Fondo fondo;
 	
 	Juego(){
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (10,40,390,530);
-		
-		
+		this.rocas = new Roca();
+		this.fondo = new Fondo();
 		
 		this.entorno.iniciar();
 	}
@@ -25,6 +27,12 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
+		
+		/////////////////// DIBUJAR FONDO Y ROCAS DENTRO DEL MAPA/////////////////////
+		
+		this.fondo.dibujar(entorno);
+		this.rocas.dibujar(entorno);
+		
 		/////////////////// DIBUJAR A GONDOLF,MOVER,LANZAR///////////////////// 
 	
 		this.gondolf.dibujar(entorno);
