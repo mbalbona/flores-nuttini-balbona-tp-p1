@@ -19,7 +19,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (10,40,390,530);
 		this.rocas = new Roca();
-		this.fondo = new Fondo();
+		//this.fondo = new Fondo();
 		
 		this.entorno.iniciar();
 	}
