@@ -1,6 +1,7 @@
 package juego;
 import java.awt.Color;
 
+import enemigos.Vampiro;
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -18,12 +19,13 @@ public class Juego extends InterfaceJuego
 	Juego(){
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (10,40,390,530);
+		this.vampiro = new Vampiro();
 		this.rocas = new Roca();
 		this.fondo = new Fondo();
 		
 		this.entorno.iniciar();
 	}
-
+	
 	
 	public void tick()
 	{
@@ -90,7 +92,8 @@ public class Juego extends InterfaceJuego
 		
 
 		//////////////////////////////////////////////////////////////////////
-		
+	     //////////////////////// DIBUJAR VAMPIRO ///////////////////////
+	    this.vampiro.dibujar(entorno);
 		
 		
 		
