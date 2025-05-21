@@ -12,16 +12,16 @@ public class Juego extends InterfaceJuego
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
 	Mago gondolf;
-	Vampiro vampiro;
+	Murcielago murcielago;
 	Roca rocas;
 	Fondo fondo;
 	
 	Juego(){
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (10,40,390,530);
-		this.vampiro = new Vampiro();
+		this.murcielago = new Murcielago();
 		this.rocas = new Roca();
-		//this.fondo = new Fondo();
+		this.fondo = new Fondo();
 		
 		this.entorno.iniciar();
 	}
@@ -29,6 +29,7 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
+		
 		
 		/////////////////// DIBUJAR FONDO Y ROCAS DENTRO DEL MAPA/////////////////////
 		
@@ -63,8 +64,7 @@ public class Juego extends InterfaceJuego
 		        this.gondolf.moverAbajo();
 		    }
 		}
-		
-		///////////////////////////////////////////////////////////////////////////////
+				
 		
 		
 		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK ///////////////////////
@@ -84,23 +84,12 @@ public class Juego extends InterfaceJuego
 	        }
 		}
 		
+		////////////////////////DIBUJAR MURCIELAGO ///////////////////////
+		this.murcielago.dibujar(entorno);
+		this.murcielago.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
 
-
-	    gondolf.variosFuegos(entorno);
-	    gondolf.variasAguas(entorno);
-
 		
 
-		//////////////////////////////////////////////////////////////////////
-	     //////////////////////// DIBUJAR VAMPIRO ///////////////////////
-	    this.vampiro.dibujar(entorno);
-		
-		
-		
-		
-		
-		
-		
 
 		}
 	
