@@ -1,7 +1,7 @@
 package juego;
 import java.awt.Color;
+import java.util.Random;
 
-import enemigos.Vampiro;
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -12,19 +12,54 @@ public class Juego extends InterfaceJuego
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
 	Mago gondolf;
-	Murcielago murcielago;
+	Murcielago[] murcielagos;
 	Roca rocas;
 	Fondo fondo;
 	
-	Juego(){
+	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
+	private Random random;
+	private static final int cantMurcielagos = 50;
+	private int intervaloAparicion = 60;
+	private int contadorAparicion = 0;
+	
+	///DIMENSIONES DE LA VENTANA DE JUEGO
+	private int anchoPantalla = 800;
+	private int altoPantalla = 600;
+	private int margenPantalla = 50;
+	
+	///CONSTRUCTOR
+	public Juego(){
+		///INICIAMOS OBJETOS ESENCIALES
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (10,40,390,530);
-		this.murcielago = new Murcielago();
 		this.rocas = new Roca();
 		this.fondo = new Fondo();
+		this.random = new Random();
 		
+		///MOBS
+		this.murcielagos = new Murcielago[this.cantMurcielagos];
+		///LLENAMOS EL ARRAY DE OBJETOS DE MURCIELAGO
+				for(int i = 0; i < this.cantMurcielagos; i++) {
+					murcielagos[i] = new Murcielago();
+				}
+		
+			
+		///SE INICIA EL ENTORNO DEL JUEGO
 		this.entorno.iniciar();
 	}
+	
+	private void añadirMurcielagoEnPosicionAleatoria() {
+		for(int i = 0; i < this.cantMurcielagos;i++) {
+			if(this.murcielagos[i].getX() == -100 && this.murcielagos[i].getY() == -100) {
+				int nuevaX = random.nextInt(this.anchoPantalla);
+				int nuevaY = random.nextInt(this.altoPantalla);
+				this.murcielagos[i].setX(nuevaX);
+				this.murcielagos[i].setY(nuevaY);
+				return;
+			}
+		}
+	}
+		
 	
 	
 	public void tick()
@@ -84,15 +119,27 @@ public class Juego extends InterfaceJuego
 	        }
 		}
 		
-		////////////////////////DIBUJAR MURCIELAGO ///////////////////////
-		this.murcielago.dibujar(entorno);
-		this.murcielago.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
-
-		
-
-
+		////////////////////////CONTROL DE APARICION///////////////////////
+		this.contadorAparicion++;
+		if(this.contadorAparicion >= this.intervaloAparicion) {
+			System.out.println("Tiempo de aparicion");
+			añadirMurcielagoEnPosicionAleatoria();
+			this.contadorAparicion = 0;
 		}
-	
+		
+		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
+		for(int i = 0; i < this.cantMurcielagos; i++) {
+			Murcielago m = this.murcielagos[i];
+			if(m.getX() != -100 || m.getY() != -100) {
+				m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
+				m.dibujar(entorno);
+			}
+		}
+		
+		
+	}
+
+
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args)

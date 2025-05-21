@@ -11,11 +11,12 @@ public class Murcielago {
 	private double escala;
 	private int vida;
 	private int defensa;
+	
 	Image imgMurcielago;
 	
 	public Murcielago() {
-		this.x = 300;
-		this.y = 200;
+		this.x = -100;
+		this.y = -100;
 		this.velocidad = 3;
 		this.escala = 0.1;
 		this.vida = 100;
