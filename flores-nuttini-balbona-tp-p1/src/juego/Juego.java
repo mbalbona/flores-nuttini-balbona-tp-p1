@@ -21,7 +21,7 @@ public class Juego extends InterfaceJuego
 		this.gondolf = new Mago (10,40,390,530);
 		this.vampiro = new Vampiro();
 		this.rocas = new Roca();
-		this.fondo = new Fondo();
+		//this.fondo = new Fondo();
 		
 		this.entorno.iniciar();
 	}
