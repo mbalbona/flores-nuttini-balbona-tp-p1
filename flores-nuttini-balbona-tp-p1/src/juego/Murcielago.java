@@ -17,7 +17,7 @@ public class Murcielago {
 		this.x = 300;
 		this.y = 200;
 		this.velocidad = 3;
-		this.escala = 0.5;
+		this.escala = 0.1;
 		this.vida = 100;
 		this.defensa = 100;
 		imgMurcielago = Herramientas.cargarImagen("imagenes/bat.gif");
