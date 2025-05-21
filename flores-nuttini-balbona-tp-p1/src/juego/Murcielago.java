@@ -68,31 +68,45 @@ public class Murcielago {
 	//////////////////////// MOVIMIENTO HACIA EL JUGADOR///////////////////////
 	public void moverHaciaJugador(int posJugadorX, int posJugadorY) {
 
-		// Calcula la diferencia en X e Y entre el murciélago y el jugador
+		/// Calcula la diferencia en X e Y entre el murciélago y el jugador
 		double x = posJugadorX - this.x;
 		double y = posJugadorY - this.y;
 
-		// Calcula la distancia total entre el murciélago y el jugador
-		// Usamos la fórmula de la distancia euclidiana: sqrt(dx^2 + dy^2)
-		///(HIPOTENUSA) * (HIPOTENUSA) TEOREMA DE PITAGORAS PARA CALCULAR LA DISTANCIA MAS CORTA EN LINEA RECTA
-		///LUEGO ESE RESULTADO CON MATH.SQRT QUE SIGNIFICA RAIZ CUADRADA REALIZAMOS LA OPERACION Y
-		///OBTENEMOS EL LARGO DE LA HIPOTENUSA DEFINITIVA
+		/// Calcula la distancia total entre el murciélago y el jugador
+				
+		///(HIPOTENUSA) * (HIPOTENUSA) = TEOREMA DE PITAGORAS 
+		///LUEGO ESE RESULTADO CON LA FUNCION "MATH.SQRT()" QUE SIGNIFICA RAIZ CUADRADA REALIZAMOS LA OPERACION Y
+		///OBTENEMOS EL LARGO DE LA HIPOTENUSA DEFINITIVA QUE EN RESUMEN ES LA DISTANCIA MAS CORTA EN LINEA RECTA 
+		///ENTRE DOS PUNTOS EN UN MAPA (EN ESTE CASO LA PANTALLA) PERMITIENDONOS SABER CUANTO "PASOS" DEBE DAR
+		///EL MURCIELAGO PARA LLEGAR AL JUGADOR COMBINANDO MOVIMIENTOS VERTICALES Y HORIZONTALES.
 		double distancia = Math.sqrt(x * x + y * y);   
 
-		// Evita dividir por cero si el murciélago ya está en la posición del jugador
+		/// Evita dividir por cero si el murciélago ya está en la posición del jugador
 		if (distancia > 0) {
-			// Calcula los componentes del vector de dirección normalizado
-			// (un vector de longitud 1 que apunta hacia el jugador)
-			double dirX = x / distancia;
-			double dirY = y / distancia;
+			
+			/// Crea un vector de direccion y calcula los componentes del vector
+			/// (un vector de longitud 1 que apunta hacia el jugador)
+			/// Tiene direccion 1 para que la distancia siempre sea la misma para que apunte perfectamente al jugador
+			/// y no "cuanta" distancia hay, asi podemos controlarlo con la variable "Velocidad"
+			
+			double direccionX = x / distancia;	
+			double direccionY = y / distancia;
 
-			// Actualiza la posición del murciélago
-			// Multiplica el vector de dirección y lo normaliza con la velocidad seteada
-			this.x += dirX * this.velocidad;
-			this.y += dirY * this.velocidad;
+			/// Actualiza la posición del murciélago
+			/// Multiplica el vector de dirección y lo normaliza con la velocidad seteada
+			///
+			this.x += direccionX * this.velocidad;
+			this.y += direccionY * this.velocidad;
 
-			//evita que el murciélago "oscile" alrededor del jugador.
-			if (Math.abs(this.x - posJugadorX) < this.velocidad && Math.abs(this.y - posJugadorY) < this.velocidad) {
+			///evita que el murciélago "oscile" alrededor del jugador.
+			///calcula el valor absoluto entre el X e Y del murcielago y el X e Y del jugador
+			///y compara la distancia que le falta para llegar al jugador y si es verdadero,
+			///la posicion del murcielga queda igual a la posicion del jugador para que no se sobrepase
+			///
+			///Supongamos que la posicion del murcielago es (98,100) y la del jugador es (100,100) y tenemos una velocidad de 5
+			///la proxima vez que se mueva el murcielago quedaria en (103,100) lo cual se pasaria la posicion X, esto evita que eso pase
+
+			if (Math.abs(this.x - posJugadorX) < this.velocidad && Math.abs(this.y - posJugadorY) < this.velocidad) { 
 				this.x = posJugadorX;
 				this.y = posJugadorY;
 			}
