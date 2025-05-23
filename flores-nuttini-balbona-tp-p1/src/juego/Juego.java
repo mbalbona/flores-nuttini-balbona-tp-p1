@@ -8,6 +8,7 @@ public class Juego extends InterfaceJuego
 {
 	
 	private Entorno entorno;
+	
 	private Menu menu;
 
 	Mago gondolf;
@@ -38,12 +39,11 @@ public class Juego extends InterfaceJuego
 		this.rocas.dibujar(entorno);
 		this.menu.dibujar(entorno);
 		this.gondolf.dibujar(entorno);
-		
 		///////////////////GONDOLF,MOVER,LANZAR///////////////////// 
 	
 		
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-		    gondolf.direccion = false; // mirar a la derecha
+		    gondolf.setDireccion(false); // mirar a la derecha
 		    if (gondolf.dentroLimiteDerecho()) {
 		        if (gondolf.limiteDerecho() + 2 < menu.getBordeIzquierdo()) {
 		            gondolf.moverDerecha();
@@ -53,7 +53,7 @@ public class Juego extends InterfaceJuego
 
 		
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-			gondolf.direccion = true;
+			gondolf.setDireccion(true);
 			if (gondolf.dentroLimiteIzquierdo()) {
 			this.gondolf.moverIzquirda();
 			}

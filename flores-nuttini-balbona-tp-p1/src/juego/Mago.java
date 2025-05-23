@@ -12,7 +12,8 @@ public class Mago {
 	private int y;
 	private int margen;
 	private double tamañoMago;
-	boolean direccion;				//IZQUIERDA O DERECHA
+	private boolean direccion;				//IZQUIERDA O DERECHA
+	
 	
 	//hechizo de fuego
 	private int fuegoX;
@@ -31,6 +32,8 @@ public class Mago {
 	private Image der;
 	private Image fuego;
 	private Image agua;
+	private Image arriba;
+	private Image abajo;
 	
 	private String hechizoSeleccionado = "fuego"; 
 	
@@ -45,6 +48,8 @@ public class Mago {
 	this.alto = alto;
 	this.ancho = ancho;
 	this.tamañoMago = 0.3;		//tamaño de la imagen
+	this.arriba	= Herramientas.cargarImagen("imagenes/mago-arriba.png");
+	this.abajo = Herramientas.cargarImagen("imagenes/mago-abajo.png");
 	this.izq = Herramientas.cargarImagen("imagenes/mago-der.png");
 	this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
 	this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");
@@ -52,7 +57,7 @@ public class Mago {
 	}
 	
 	public void dibujar(Entorno e) {    //DIBUJO EL MAGO
-		if(direccion) {
+		if(isDireccion()) {
 			e.dibujarImagen(this.der, this.x, this.y,0, this.tamañoMago);
 		}
 		else {
@@ -61,12 +66,14 @@ public class Mago {
 	}
 	
 	
+	
+	
 //////////////////////////////// HECHIZO FUEGO //////////////////////	
 	public void lanzarFuego() {
 	    if (!fuegoActivo) {
 	        this.fuegoX = this.x;
 	        this.fuegoY = this.y;
-	        this.direccionFuego = this.direccion;
+	        this.direccionFuego = this.isDireccion();
 	        this.fuegoActivo = true;
 	    }
 	}
@@ -95,7 +102,7 @@ public class Mago {
 	    if (!aguaActivo) {
 	        this.aguaX = this.x;
 	        this.aguaY = this.y;
-	        this.direccionAgua = this.direccion;
+	        this.direccionAgua = this.isDireccion();
 	        this.aguaActivo = true;
 	    }
 	}
@@ -194,6 +201,14 @@ public class Mago {
 
 	public String getHechizoSeleccionado() {
 	    return this.hechizoSeleccionado;
+	}
+
+	public boolean isDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(boolean direccion) {
+		this.direccion = direccion;
 	}
 
 	
