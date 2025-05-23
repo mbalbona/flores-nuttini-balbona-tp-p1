@@ -19,7 +19,7 @@ public class Juego extends InterfaceJuego
 	
 	Juego(){
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
-		this.gondolf = new Mago (10,40,390,530);
+		this.gondolf = new Mago (30,45,390,530);
 		this.murcielago = new Murcielago();
 		this.rocas = new Roca();
 		this.fondo = new Fondo();
@@ -43,7 +43,7 @@ public class Juego extends InterfaceJuego
 	
 		
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-		    gondolf.setDireccion(false); // mirar a la derecha
+		    gondolf.getDireccion(false); // mirar a la derecha
 		    if (gondolf.dentroLimiteDerecho()) {
 		        if (gondolf.limiteDerecho() + 2 < menu.getBordeIzquierdo()) {
 		            gondolf.moverDerecha();
@@ -53,7 +53,7 @@ public class Juego extends InterfaceJuego
 
 		
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-			gondolf.setDireccion(true);
+			gondolf.getDireccion(true);
 			if (gondolf.dentroLimiteIzquierdo()) {
 			this.gondolf.moverIzquirda();
 			}

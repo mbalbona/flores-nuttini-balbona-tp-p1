@@ -27,7 +27,7 @@ public class Mago {
 	private boolean aguaActivo;
 	private String direccionAgua;
 	
-	
+	//imagenes
 	private Image izq;
 	private Image der;
 	private Image fuego;
@@ -36,7 +36,7 @@ public class Mago {
 	private Image abajo;
 	
 	private String hechizoSeleccionado = "fuego"; 
-	private String ultimaDireccion = "abajo"; // puede ser: "arriba", "abajo", "izquierda", "derecha"
+	private String direccionHechizo = "abajo"; // puede ser: "arriba", "abajo", "izquierda", "derecha"
 
 	
 
@@ -58,11 +58,11 @@ public class Mago {
 	}
 	
 	public void dibujar(Entorno e) {
-	    if (ultimaDireccion.equals("izquierda")) {
+	    if (direccionHechizo.equals("izquierda")) {
 	        e.dibujarImagen(this.der, this.x, this.y, 0, this.tamañoMago);
-	    } else if (ultimaDireccion.equals("derecha")) {
+	    } else if (direccionHechizo.equals("derecha")) {
 	        e.dibujarImagen(this.izq, this.x, this.y, 0, this.tamañoMago);
-	    } else if (ultimaDireccion.equals("arriba")) {
+	    } else if (direccionHechizo.equals("arriba")) {
 	        e.dibujarImagen(this.arriba, this.x, this.y, 0, this.tamañoMago);
 	    } else {
 	        e.dibujarImagen(this.abajo, this.x, this.y, 0, this.tamañoMago);
@@ -79,7 +79,7 @@ public class Mago {
 	    if (!fuegoActivo) {    // Solo lanza si no hay otro fuego en pantalla
 	        this.fuegoX = this.x;
 	        this.fuegoY = this.y;
-	        this.direccionFuego = this.ultimaDireccion;
+	        this.direccionFuego = this.direccionHechizo;
 	        this.fuegoActivo = true;
 	    }
 	}
@@ -99,7 +99,7 @@ public class Mago {
 	        e.dibujarImagen(this.fuego, fuegoX, fuegoY, 0, this.tamañoMago);
 
 	        // Si el hechizo se va fuera de la pantalla, se desactiva
-	        if (fuegoX < 0 || fuegoX > 800 || fuegoY < 0 || fuegoY > 600) {
+	        if (fuegoX < 0 || fuegoX > 590 || fuegoY < 0 || fuegoY > 600) {
 	            fuegoActivo = false;
 	        }
 	    }
@@ -114,7 +114,7 @@ public class Mago {
 	    if (!aguaActivo) {
 	        this.aguaX = this.x;
 	        this.aguaY = this.y;
-	        this.direccionAgua = this.ultimaDireccion;
+	        this.direccionAgua = this.direccionHechizo;
 	        this.aguaActivo = true;
 	    }
 	}
@@ -133,7 +133,7 @@ public class Mago {
 
 	        e.dibujarImagen(this.agua, aguaX, aguaY, 0, this.tamañoMago);
 
-	        if (aguaX < 0 || aguaX > 800 || aguaY < 0 || aguaY > 600) {
+	        if (aguaX < 0 || aguaX > 590 || aguaY < 0 || aguaY > 600) {
 	            aguaActivo = false;
 	        }
 	    }
@@ -190,22 +190,22 @@ public class Mago {
 
 	public void moverDerecha() {
 	    this.x += 2;
-	    this.ultimaDireccion = "derecha";
+	    this.direccionHechizo = "derecha";
 	}
 
 	public void moverIzquirda() {
 	    this.x -= 2;
-	    this.ultimaDireccion = "izquierda";
+	    this.direccionHechizo = "izquierda";
 	}
 
 	public void moverArriba() {
 	    this.y -= 2;
-	    this.ultimaDireccion = "arriba";
+	    this.direccionHechizo = "arriba";
 	}
 
 	public void moverAbajo() {
 	    this.y += 2;
-	    this.ultimaDireccion = "abajo";
+	    this.direccionHechizo = "abajo";
 	}
 
 	public int getAlto() {
@@ -225,13 +225,13 @@ public class Mago {
 	    return this.hechizoSeleccionado;
 	}
 
-	public boolean isDireccion() {
-		return direccion;
-	}
+	
 
-	public void setDireccion(boolean direccion) {
+	public void getDireccion(boolean direccion) {
 		this.direccion = direccion;
 	}
+
+	
 
 	
 	
