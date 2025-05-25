@@ -1,5 +1,6 @@
 package juego;
 import java.awt.Color;
+import java.awt.Point;
 import java.util.Random;
 
 import entorno.Entorno;
@@ -26,6 +27,7 @@ public class Juego extends InterfaceJuego
 	private int anchoPantalla = 800;
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
+	
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -61,10 +63,13 @@ public class Juego extends InterfaceJuego
 	}
 		
 	
-	
 	public void tick()
 	{
 		
+		Point puntoLimiteDerechoMago = new Point (gondolf.limiteDerecho(), this.gondolf.getY());      //Delimita en un punto el límite derecho del mago
+		Point puntoLimiteIzquierdoMago = new Point (gondolf.limiteIzquierdo(), this.gondolf.getY());  //Delimita en un punto el límite izquierdo del mago
+		Point puntoLimiteSuperiorMago = new Point (this.gondolf.getX(), gondolf.limiteSuperior());    //Delimita en un punto el límite superior del mago
+		Point puntoLimiteInferiorMago = new Point (this.gondolf.getX(), gondolf.limiteInferior());    //Delimita en un punto el límite inferior del mago
 		
 		/////////////////// DIBUJAR FONDO Y ROCAS DENTRO DEL MAPA/////////////////////
 		
@@ -76,26 +81,25 @@ public class Juego extends InterfaceJuego
 		this.gondolf.dibujar(entorno);
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			gondolf.direccion = false;	//cambia la direccion
-			if (gondolf.dentroLimiteDerecho()) {
-			this.gondolf.moverDerecha();
+			if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
+			this.gondolf.moverDerecha();		
 		}
-		}
-		
+		}		
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
 			gondolf.direccion = true;
-			if (gondolf.dentroLimiteIzquierdo()) {
+			if (gondolf.dentroLimiteIzquierdo() && rocas.limiteDerechoEnPiedra(puntoLimiteIzquierdoMago, rocas.rocas)==false) {
 			this.gondolf.moverIzquirda();
 			}
 		}
 		
 		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-		    if (gondolf.dentroLimiteSuperior()) {
+		    if (gondolf.dentroLimiteSuperior() && rocas.limiteInferiorEnPiedra(puntoLimiteSuperiorMago, rocas.rocas)==false) {
 		        this.gondolf.moverArriba();
 		    }
 		}
 
 		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-		    if (gondolf.dentroLimiteInferior()) {
+		    if (gondolf.dentroLimiteInferior() && rocas.limiteSuperiorEnPiedra(puntoLimiteInferiorMago, rocas.rocas)==false) {
 		        this.gondolf.moverAbajo();
 		    }
 		}
@@ -138,6 +142,7 @@ public class Juego extends InterfaceJuego
 		
 		
 	}
+	
 
 
 

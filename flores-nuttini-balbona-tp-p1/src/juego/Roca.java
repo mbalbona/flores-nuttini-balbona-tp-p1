@@ -4,6 +4,7 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 import java.awt.Image;
+import java.awt.Point;
 
 public class Roca {
 	private int x;
@@ -25,19 +26,19 @@ public class Roca {
 		this.rocas = new Roca[5];
 		for(int i=0; i<rocas.length;i++) {
 			if(i==0) {
-				rocas[i] = new Roca(piedra, 200,100,40,40);
+				rocas[i] = new Roca(piedra, 200,100,65,40);
 			}
 			if(i==1) {
-				rocas[i] = new Roca(piedra, 500,100,40,40);
+				rocas[i] = new Roca(piedra, 500,100,65,40);
 			}
 			if(i==2) {
-				rocas[i] = new Roca(piedra, 200,400,40,40);
+				rocas[i] = new Roca(piedra, 200,400,65,40);
 			}
 			if(i==3) {
-				rocas[i] = new Roca(piedra, 500,400,40,40);
+				rocas[i] = new Roca(piedra, 500,400,65,40);
 			}
 			if(i==4) {
-				rocas[i] = new Roca(piedra, 350,250,40,40);
+				rocas[i] = new Roca(piedra, 350,250,65,40);
 			}
 		}
 	}
@@ -92,10 +93,62 @@ public class Roca {
 
 	public void dibujar(Entorno e) {
 		for(int i = 0; i<rocas.length;i++) {
-			e.dibujarImagen(rocas[i].piedra, rocas[i].x, rocas[i].y, 0, 0.2);
+			e.dibujarImagen(rocas[i].piedra, rocas[i].x, rocas[i].y, 0, 0.15);
 		}
 			
 	}
+	
+	public Point puntoDerechoSuperiorPiedra(Roca roca) {
+		Point punto = new Point(roca.getX() + roca.getAncho()/2, roca.getY() - roca.getAlto()/2);
+		return punto; 
+	}
+	public Point puntoIzquierdoSuperiorPiedra(Roca roca) {
+		Point punto = new Point(roca.getX() - roca.getAncho()/2, roca.getY() - roca.getAlto()/2);
+		return punto; 
+	}
+	public Point puntoDerechoInferiorPiedra(Roca roca) {
+		Point punto = new Point(roca.getX() + roca.getAncho()/2, roca.getY() + roca.getAlto()/2);
+		return punto; 
+	}
+	public Point puntoIzquierdoInferiorPiedra(Roca roca) {
+		Point punto = new Point(roca.getX() - roca.getAncho()/2, roca.getY() + roca.getAlto()/2);
+		return punto; 
+	}
+	
+	public boolean limiteDerechoEnPiedra(Point punto, Roca [] rocas) {
+		for (int i = 0; i < rocas.length; i++) {
+		if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.y >= puntoDerechoSuperiorPiedra(rocas[i]).y && punto.y <= puntoDerechoInferiorPiedra(rocas[i]).y) {
+			return true;
+			}
+		}
+		return false;
+		
+	}
+	public boolean limiteIzquierdoEnPiedra(Point punto, Roca [] rocas) {
+		for (int i = 0; i < rocas.length; i++) {
+			if (punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean limiteSuperiorEnPiedra(Point punto, Roca [] rocas) {
+		for (int i = 0; i < rocas.length; i++) {
+			if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean limiteInferiorEnPiedra(Point punto, Roca [] rocas) {
+		for (int i = 0; i < rocas.length; i++) {
+			if (punto.x <= puntoDerechoInferiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoInferiorPiedra(rocas[i]).x && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
 
 
