@@ -26,19 +26,19 @@ public class Roca {
 		this.rocas = new Roca[5];
 		for(int i=0; i<rocas.length;i++) {
 			if(i==0) {
-				rocas[i] = new Roca(piedra, 200,100,65,40);
+				rocas[i] = new Roca(piedra, 200,100,90,40);
 			}
 			if(i==1) {
-				rocas[i] = new Roca(piedra, 500,100,65,40);
+				rocas[i] = new Roca(piedra, 500,100,90,40);
 			}
 			if(i==2) {
-				rocas[i] = new Roca(piedra, 200,400,65,40);
+				rocas[i] = new Roca(piedra, 200,400,90,40);
 			}
 			if(i==3) {
-				rocas[i] = new Roca(piedra, 500,400,65,40);
+				rocas[i] = new Roca(piedra, 500,400,90,40);
 			}
 			if(i==4) {
-				rocas[i] = new Roca(piedra, 350,250,65,40);
+				rocas[i] = new Roca(piedra, 350,250,90,40);
 			}
 		}
 	}

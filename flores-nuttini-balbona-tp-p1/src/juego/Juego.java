@@ -80,13 +80,13 @@ public class Juego extends InterfaceJuego
 	
 		this.gondolf.dibujar(entorno);
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-			gondolf.direccion = false;	//cambia la direccion
+			//gondolf.direccion = false;	//cambia la direccion
 			if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
 			this.gondolf.moverDerecha();		
 		}
 		}		
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-			gondolf.direccion = true;
+		//	gondolf.direccion = true;
 			if (gondolf.dentroLimiteIzquierdo() && rocas.limiteDerechoEnPiedra(puntoLimiteIzquierdoMago, rocas.rocas)==false) {
 			this.gondolf.moverIzquirda();
 			}
