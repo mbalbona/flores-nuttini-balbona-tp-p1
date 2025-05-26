@@ -51,8 +51,7 @@ public class Juego extends InterfaceJuego
 		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
 
 		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
-		game_music.loop(Clip.LOOP_CONTINUOUSLY);  // Música de fondo en loop
-
+		game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
 		
 		
@@ -85,19 +84,19 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
-		// --- Mostrar Menú Inicial ---
+		/////////////////////////MENU DE JUEGO INICIO//////////////////////////////////////
 		if (enMenu) {
 		    entorno.dibujarImagen(imagenMenu, entorno.ancho() / 2, entorno.alto() / 2, 0);
 		    
 		    if (entorno.sePresiono(entorno.TECLA_ENTER)) {
-		        enMenu = false; // empieza el juego
+		        enMenu = false; 
 		    }
 		    if (entorno.sePresiono(entorno.TECLA_ESCAPE)) {
-		        System.exit(0); // salir del juego
+		        System.exit(0); // 
 		    }
-		    return; // si se está mostrando el menú, no ejecuta el resto del juego
+		    return; 
 		}
-
+		///////////////////////////////////////////////////////////////////////////////////
 		
 		
 		Point puntoLimiteDerechoMago = new Point (gondolf.limiteDerecho(), this.gondolf.getY());      //Delimita en un punto el límite derecho del mago
