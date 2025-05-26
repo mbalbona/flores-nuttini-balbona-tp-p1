@@ -16,7 +16,7 @@ public class Juego extends InterfaceJuego
 	Murcielago[] murcielagos;
 	Roca rocas;
 	Fondo fondo;
-	
+	//adaasd
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
 	private static final int cantMurcielagos = 50;
