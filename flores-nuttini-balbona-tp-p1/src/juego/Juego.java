@@ -86,7 +86,7 @@ public class Juego extends InterfaceJuego
 		this.gondolf.dibujar(entorno);
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			  gondolf.getDireccion(false); // mirar a la derecha
-			  if (gondolf.dentroLimiteDerecho()) {
+			  if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
 			      if (gondolf.limiteDerecho() + 2 < menu.getBordeIzquierdo()) {
 			          gondolf.moverDerecha();
 			      }
@@ -96,19 +96,19 @@ public class Juego extends InterfaceJuego
 			
 			if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
 				gondolf.getDireccion(true);
-				if (gondolf.dentroLimiteIzquierdo()) {
+				if (gondolf.dentroLimiteIzquierdo() && rocas.limiteDerechoEnPiedra(puntoLimiteIzquierdoMago, rocas.rocas)==false) {
 				this.gondolf.moverIzquirda();
 				}
 			}
 			
 			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-			  if (gondolf.dentroLimiteSuperior()) {
+			  if (gondolf.dentroLimiteSuperior() && rocas.limiteInferiorEnPiedra(puntoLimiteSuperiorMago, rocas.rocas)==false) {
 			      this.gondolf.moverArriba();
 			  }
 			}
 			
 			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-			  if (gondolf.dentroLimiteInferior()) {
+			  if (gondolf.dentroLimiteInferior() && rocas.limiteSuperiorEnPiedra(puntoLimiteInferiorMago, rocas.rocas)==false) {
 			      this.gondolf.moverAbajo();
 			  }
 			}
