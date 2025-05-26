@@ -2,8 +2,9 @@ package juego;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
-
+import javax.sound.sampled.Clip;
 import entorno.Entorno;
+import entorno.Herramientas;
 import entorno.InterfaceJuego;
 
 public class Juego extends InterfaceJuego
@@ -18,6 +19,7 @@ public class Juego extends InterfaceJuego
 	Fondo fondo;
 	Menu menu;
 	
+	Clip game_music;
 	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
@@ -40,6 +42,9 @@ public class Juego extends InterfaceJuego
 		this.fondo = new Fondo();
 		this.random = new Random();
 		this.menu = new Menu();
+		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
+		game_music.loop(Clip.LOOP_CONTINUOUSLY);  // Música de fondo en loop
+
 		
 		
 		///MOBS
@@ -65,6 +70,8 @@ public class Juego extends InterfaceJuego
 			}
 		}
 	}
+	
+	
 		
 	
 	public void tick()
