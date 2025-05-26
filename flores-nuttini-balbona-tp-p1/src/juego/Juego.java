@@ -1,5 +1,6 @@
 package juego;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.Random;
 import javax.sound.sampled.Clip;
@@ -21,6 +22,9 @@ public class Juego extends InterfaceJuego
 	
 	Clip game_music;
 	
+	private boolean enMenu = true;
+	private Image imagenMenu;
+	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
 	private static final int cantMurcielagos = 50;
@@ -35,6 +39,8 @@ public class Juego extends InterfaceJuego
 	
 	///CONSTRUCTOR
 	public Juego(){
+		
+		
 		///INICIAMOS OBJETOS ESENCIALES
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		this.gondolf = new Mago (30,45,390,530);
@@ -42,9 +48,12 @@ public class Juego extends InterfaceJuego
 		this.fondo = new Fondo();
 		this.random = new Random();
 		this.menu = new Menu();
+		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
+
 		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
 		game_music.loop(Clip.LOOP_CONTINUOUSLY);  // Música de fondo en loop
 
+		
 		
 		
 		///MOBS
@@ -76,6 +85,20 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
+		// --- Mostrar Menú Inicial ---
+		if (enMenu) {
+		    entorno.dibujarImagen(imagenMenu, entorno.ancho() / 2, entorno.alto() / 2, 0);
+		    
+		    if (entorno.sePresiono(entorno.TECLA_ENTER)) {
+		        enMenu = false; // empieza el juego
+		    }
+		    if (entorno.sePresiono(entorno.TECLA_ESCAPE)) {
+		        System.exit(0); // salir del juego
+		    }
+		    return; // si se está mostrando el menú, no ejecuta el resto del juego
+		}
+
+		
 		
 		Point puntoLimiteDerechoMago = new Point (gondolf.limiteDerecho(), this.gondolf.getY());      //Delimita en un punto el límite derecho del mago
 		Point puntoLimiteIzquierdoMago = new Point (gondolf.limiteIzquierdo(), this.gondolf.getY());  //Delimita en un punto el límite izquierdo del mago
