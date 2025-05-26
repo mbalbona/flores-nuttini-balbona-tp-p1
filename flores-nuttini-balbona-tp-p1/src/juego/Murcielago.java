@@ -11,7 +11,7 @@ public class Murcielago {
 	private double escala;
 	private int vida;
 	private int defensa;
-	
+	private boolean estaVivo;
 	Image imgMurcielago;
 	
 	public Murcielago() {
@@ -21,6 +21,7 @@ public class Murcielago {
 		this.escala = 0.1;
 		this.vida = 100;
 		this.defensa = 100;
+		this.estaVivo = false;
 		imgMurcielago = Herramientas.cargarImagen("imagenes/bat.gif");
 	}
 	
@@ -74,10 +75,7 @@ public class Murcielago {
 		double y = posJugadorY - this.y;
 
 		/// Calcula la distancia total entre el murciélago y el jugador
-				
-		///(HIPOTENUSA) * (HIPOTENUSA) = TEOREMA DE PITAGORAS 
-		///LUEGO ESE RESULTADO CON LA FUNCION "MATH.SQRT()" QUE SIGNIFICA RAIZ CUADRADA REALIZAMOS LA OPERACION Y
-		///OBTENEMOS EL LARGO DE LA HIPOTENUSA DEFINITIVA QUE EN RESUMEN ES LA DISTANCIA MAS CORTA EN LINEA RECTA 
+		///OBTENEMOS LA DISTANCIA MAS CORTA EN LINEA RECTA 
 		///ENTRE DOS PUNTOS EN UN MAPA (EN ESTE CASO LA PANTALLA) PERMITIENDONOS SABER CUANTO "PASOS" DEBE DAR
 		///EL MURCIELAGO PARA LLEGAR AL JUGADOR COMBINANDO MOVIMIENTOS VERTICALES Y HORIZONTALES.
 		double distancia = Math.sqrt(x * x + y * y);   

@@ -27,15 +27,15 @@ public class Juego extends InterfaceJuego
 	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
-	private static final int cantMurcielagos = 50;
-	private int intervaloAparicion = 60;
+	private static int cantMurcielagos = 50;
+	private int intervaloAparicion = 120;
 	private int contadorAparicion = 0;
 	
 	///DIMENSIONES DE LA VENTANA DE JUEGO
 	private int anchoPantalla = 800;
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
-	
+	private int margenAparicion = 50;
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -70,8 +70,35 @@ public class Juego extends InterfaceJuego
 	private void añadirMurcielagoEnPosicionAleatoria() {
 		for(int i = 0; i < this.cantMurcielagos;i++) {
 			if(this.murcielagos[i].getX() == -100 && this.murcielagos[i].getY() == -100) {
-				int nuevaX = random.nextInt(this.anchoPantalla);
-				int nuevaY = random.nextInt(this.altoPantalla);
+				int nuevaX;
+				int nuevaY;
+				int anchoJugable = this.anchoPantalla - this.menu.getAncho();
+				
+				int bordeRandom = this.random.nextInt(4); ///Se elige aleatoriamente un numero que representa los lados
+				
+				switch(bordeRandom) {
+					case 0: ///Borde Superior
+						nuevaX = this.random.nextInt(anchoJugable);
+						nuevaY = -this.margenAparicion;
+						break;
+					case 1: ///Borde inferior
+						nuevaX = this.random.nextInt(anchoJugable);
+						nuevaY = this.altoPantalla + this.margenAparicion;
+						break;
+					case 2: ///Borde izquierdo
+						nuevaX = -this.margenAparicion;
+						nuevaY = this.random.nextInt(this.altoPantalla);
+						break;
+					case 3: ///Borde Derecho
+						nuevaX = anchoJugable;
+						nuevaY = this.random.nextInt(this.altoPantalla);
+						break;
+					default:
+						nuevaX = -this.margenAparicion;
+						nuevaY = -this.margenAparicion;
+						break;
+						
+				}
 				this.murcielagos[i].setX(nuevaX);
 				this.murcielagos[i].setY(nuevaY);
 				return;
@@ -170,7 +197,7 @@ public class Juego extends InterfaceJuego
 		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
-			System.out.println("Tiempo de aparicion");
+			System.out.println("Tiempo de aparicion:"+ this.contadorAparicion);
 			añadirMurcielagoEnPosicionAleatoria();
 			this.contadorAparicion = 0;
 		}
