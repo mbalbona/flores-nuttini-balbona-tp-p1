@@ -21,7 +21,7 @@ public class Murcielago {
 		this.escala = 0.1;
 		this.vida = 100;
 		this.defensa = 100;
-		this.estaVivo = false;
+		this.setEstaVivo(true);
 		imgMurcielago = Herramientas.cargarImagen("imagenes/bat.gif");
 	}
 	
@@ -61,6 +61,14 @@ public class Murcielago {
 	}
 	public void setDefensa(int defensa) {
 		this.defensa = defensa;
+	}
+	
+	public boolean getEstaVivo() {
+		return estaVivo;
+	}
+
+	public void setEstaVivo(boolean estaVivo) {
+		this.estaVivo = estaVivo;
 	}
 
 	//////////////////////// DIBUJAR MURCIELAGO ///////////////////////
@@ -110,6 +118,11 @@ public class Murcielago {
 				this.y = posJugadorY;
 			}
 		}
+	}
+
+	//////////////////////// DESACTIVAR MURCIELAGO///////////////////////
+	public void desactivar() {
+		this.estaVivo = false;
 	}
 	
 	

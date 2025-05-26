@@ -36,6 +36,7 @@ public class Juego extends InterfaceJuego
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
 	private int margenAparicion = 50;
+	private int contadorMurcielagos = 0;
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -56,12 +57,7 @@ public class Juego extends InterfaceJuego
 		
 		
 		///MOBS
-		this.murcielagos = new Murcielago[this.cantMurcielagos];
-		///LLENAMOS EL ARRAY DE OBJETOS DE MURCIELAGO
-				for(int i = 0; i < this.cantMurcielagos; i++) {
-					murcielagos[i] = new Murcielago();
-				}
-		
+		this.murcielagos = new Murcielago[this.cantMurcielagos];	
 			
 		///SE INICIA EL ENTORNO DEL JUEGO
 		this.entorno.iniciar();
@@ -69,7 +65,7 @@ public class Juego extends InterfaceJuego
 	
 	private void añadirMurcielagoEnPosicionAleatoria() {
 		for(int i = 0; i < this.cantMurcielagos;i++) {
-			if(this.murcielagos[i].getX() == -100 && this.murcielagos[i].getY() == -100) {
+			if(this.murcielagos[i] == null) {
 				int nuevaX;
 				int nuevaY;
 				int anchoJugable = this.anchoPantalla - this.menu.getAncho();
@@ -99,6 +95,7 @@ public class Juego extends InterfaceJuego
 						break;
 						
 				}
+				this.murcielagos[i] = new Murcielago();
 				this.murcielagos[i].setX(nuevaX);
 				this.murcielagos[i].setY(nuevaY);
 				return;
@@ -205,17 +202,27 @@ public class Juego extends InterfaceJuego
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
 		for(int i = 0; i < this.cantMurcielagos; i++) {
 			Murcielago m = this.murcielagos[i];
-			if(m.getX() != -100 || m.getY() != -100) {
+			if(m != null) {
 				m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
-				m.dibujar(entorno);
+				
+				int margenDistancia = (int)m.getVelocidad();
+				
+				///Calculo de distancia real
+				double auxX = this.gondolf.getX() - m.getX();
+				double auxY = this.gondolf.getY() - m.getY();
+				double distanciaActual = Math.sqrt(auxX * auxX + auxY * auxY);
+				
+				if(distanciaActual <= margenDistancia) {
+					System.out.println("Murcielago alcanczo al jugador");
+					this.murcielagos[i] = null;
+				}
+				else {
+					m.dibujar(entorno);
+					this.contadorMurcielagos++;
+				}
 			}
 		}
-		
-		
 	}
-	
-
-
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args)
