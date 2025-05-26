@@ -16,7 +16,9 @@ public class Juego extends InterfaceJuego
 	Murcielago[] murcielagos;
 	Roca rocas;
 	Fondo fondo;
-	//adaasd
+	Menu menu;
+	
+	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
 	private static final int cantMurcielagos = 50;
@@ -33,10 +35,12 @@ public class Juego extends InterfaceJuego
 	public Juego(){
 		///INICIAMOS OBJETOS ESENCIALES
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
-		this.gondolf = new Mago (10,40,390,530);
+		this.gondolf = new Mago (30,45,390,530);
 		this.rocas = new Roca();
 		this.fondo = new Fondo();
 		this.random = new Random();
+		this.menu = new Menu();
+		
 		
 		///MOBS
 		this.murcielagos = new Murcielago[this.cantMurcielagos];
@@ -75,53 +79,61 @@ public class Juego extends InterfaceJuego
 		
 		this.fondo.dibujar(entorno);
 		this.rocas.dibujar(entorno);
+		this.menu.dibujar(entorno);
 		
 		/////////////////// DIBUJAR A GONDOLF,MOVER,LANZAR///////////////////// 
 	
 		this.gondolf.dibujar(entorno);
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-			//gondolf.direccion = false;	//cambia la direccion
-			if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
-			this.gondolf.moverDerecha();		
-		}
-		}		
-		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-		//	gondolf.direccion = true;
-			if (gondolf.dentroLimiteIzquierdo() && rocas.limiteDerechoEnPiedra(puntoLimiteIzquierdoMago, rocas.rocas)==false) {
-			this.gondolf.moverIzquirda();
+			  gondolf.getDireccion(false); // mirar a la derecha
+			  if (gondolf.dentroLimiteDerecho()) {
+			      if (gondolf.limiteDerecho() + 2 < menu.getBordeIzquierdo()) {
+			          gondolf.moverDerecha();
+			      }
+			  }
 			}
-		}
-		
-		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-		    if (gondolf.dentroLimiteSuperior() && rocas.limiteInferiorEnPiedra(puntoLimiteSuperiorMago, rocas.rocas)==false) {
-		        this.gondolf.moverArriba();
-		    }
-		}
-
-		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-		    if (gondolf.dentroLimiteInferior() && rocas.limiteSuperiorEnPiedra(puntoLimiteInferiorMago, rocas.rocas)==false) {
-		        this.gondolf.moverAbajo();
-		    }
-		}
+			
+			
+			if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+				gondolf.getDireccion(true);
+				if (gondolf.dentroLimiteIzquierdo()) {
+				this.gondolf.moverIzquirda();
+				}
+			}
+			
+			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
+			  if (gondolf.dentroLimiteSuperior()) {
+			      this.gondolf.moverArriba();
+			  }
+			}
+			
+			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+			  if (gondolf.dentroLimiteInferior()) {
+			      this.gondolf.moverAbajo();
+			  }
+			}
 				
 		
 		
 		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK ///////////////////////
-		if (entorno.estaPresionada('F')) {  // F para fuego
-		    gondolf.seleccionarFuego();
-		}
-		if (entorno.estaPresionada('A')) {  // A para agua
-		    gondolf.seleccionarAgua();
-		}
-
-		
-		if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
-			if (gondolf.getHechizoSeleccionado().equals("fuego")) {
-	            gondolf.lanzarFuego();
-	        } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
-	            gondolf.lanzarAgua();
-	        }
-		}
+			if (entorno.estaPresionada('F')) {  // F para fuego
+				  gondolf.seleccionarFuego();
+				}
+				if (entorno.estaPresionada('A')) {  // A para agua
+				  gondolf.seleccionarAgua();
+				}
+				
+				
+				if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
+					if (gondolf.getHechizoSeleccionado().equals("fuego")) {
+				      gondolf.lanzarFuego();
+				  } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
+				      gondolf.lanzarAgua();
+				  }
+				}
+				
+				gondolf.variosFuegos(entorno);
+				gondolf.variasAguas(entorno);
 		
 		////////////////////////CONTROL DE APARICION///////////////////////
 		this.contadorAparicion++;
