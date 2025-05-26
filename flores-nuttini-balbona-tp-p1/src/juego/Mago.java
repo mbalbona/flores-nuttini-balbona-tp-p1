@@ -38,7 +38,10 @@ public class Mago {
 	private String hechizoSeleccionado = "fuego"; 
 	private String direccionHechizo = "abajo"; // puede ser: "arriba", "abajo", "izquierda", "derecha"
 
-	
+	private int energiaMagica = 100;  // Energía inicial
+	private final int costoFuego = 20;
+	private final int costoAgua = 0;
+
 
 	
 	
@@ -76,11 +79,12 @@ public class Mago {
 	
 //////////////////////////////// HECHIZO FUEGO //////////////////////	
 	public void lanzarFuego() {
-	    if (!fuegoActivo) {    // Solo lanza si no hay otro fuego en pantalla
+	    if (!fuegoActivo && energiaMagica >= costoFuego) {
 	        this.fuegoX = this.x;
 	        this.fuegoY = this.y;
 	        this.direccionFuego = this.direccionHechizo;
 	        this.fuegoActivo = true;
+	        this.energiaMagica -= costoFuego;
 	    }
 	}
 	// El hechizo se lanza en la dirección en la que el mago mira.
@@ -111,11 +115,12 @@ public class Mago {
 
 ///////////////////////////////// HECHIZO AGUA ////////////////////////
 	public void lanzarAgua() {
-	    if (!aguaActivo) {
+	    if (!aguaActivo && energiaMagica >= costoAgua) {
 	        this.aguaX = this.x;
 	        this.aguaY = this.y;
 	        this.direccionAgua = this.direccionHechizo;
 	        this.aguaActivo = true;
+	        this.energiaMagica -= costoAgua;
 	    }
 	}
 
@@ -231,7 +236,10 @@ public class Mago {
 		this.direccion = direccion;
 	}
 
-	
+	public int getEnergiaMagica() {
+	    return this.energiaMagica;
+	}
+
 
 	
 	

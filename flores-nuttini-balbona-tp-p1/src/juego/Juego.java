@@ -115,7 +115,7 @@ public class Juego extends InterfaceJuego
 				
 		
 		
-		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK ///////////////////////
+		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK Y CANT HECHIZOS ///////////////////////
 			if (entorno.estaPresionada('F')) {  // F para fuego
 				  gondolf.seleccionarFuego();
 				}
@@ -134,8 +134,11 @@ public class Juego extends InterfaceJuego
 				
 				gondolf.variosFuegos(entorno);
 				gondolf.variasAguas(entorno);
-		
-		////////////////////////CONTROL DE APARICION///////////////////////
+				
+				entorno.cambiarFont(null, 20, Color.RED);
+				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 650, 578);
+
+		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
 			System.out.println("Tiempo de aparicion");
