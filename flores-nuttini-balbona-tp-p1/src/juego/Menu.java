@@ -27,7 +27,7 @@ public class Menu {
         this.botonFuegoAlto = 100;
         this.botonFuegoX = x - 40;
         this.botonFuegoY = y + 90;
-//da
+
         // Botón de AGUA
         this.botonAguaAncho = 100;
         this.botonAguaAlto = 100;
@@ -48,15 +48,17 @@ public class Menu {
     }
 
     public void dibujar(Entorno e) {
-        e.dibujarImagen(this.menu, x, y, 0);
-
-        // Dibujar botón de fuego
-        e.dibujarRectangulo(botonFuegoX + botonFuegoAncho / 2, botonFuegoY + botonFuegoAlto / 2, botonFuegoAncho, botonFuegoAlto, 0, Color.RED);
+         // Dibujar botón de fuego
+        e.dibujarRectangulo(botonFuegoX + botonFuegoAncho / 2, botonFuegoY + botonFuegoAlto 
+        		/ 2, botonFuegoAncho, botonFuegoAlto, 0,Color.red);
         e.escribirTexto("Fuego", botonFuegoX + 10, botonFuegoY + 25);
 
         // Dibujar botón de agua
-        e.dibujarRectangulo(botonAguaX + botonAguaAncho / 2, botonAguaY + botonAguaAlto / 2, botonAguaAncho, botonAguaAlto, 0, Color.BLUE);
+        e.dibujarRectangulo(botonAguaX + botonAguaAncho / 2, botonAguaY + botonAguaAlto 
+        		/ 2, botonAguaAncho, botonAguaAlto, 0, Color.BLUE);
         e.escribirTexto("Agua", botonAguaX + 15, botonAguaY + 25);
+        
+        e.dibujarImagen(this.menu, x, y, 0);
     }
 
     // Método para detectar si se hizo clic en un botón
