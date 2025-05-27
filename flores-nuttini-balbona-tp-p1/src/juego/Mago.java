@@ -39,7 +39,9 @@ public class Mago {
 	private String direccionHechizo = "abajo"; // puede ser: "arriba", "abajo", "izquierda", "derecha"
 
 	private int energiaMagica = 100;  // Energía inicial
-	private final int costoFuego = 20;
+	private int vida = 100; // Vida inicial del mago
+
+	private final int costoFuego = 5;
 	private final int costoAgua = 0;
 
 
@@ -72,7 +74,7 @@ public class Mago {
 	    }
 	}
 
-
+	
 	
 	
 	
@@ -148,6 +150,13 @@ public class Mago {
 ///////////////////////////////////////////////////////////////////////////	
 
 	
+
+	
+	
+	public int getVida() {
+	    return this.vida;
+	}
+
 	public void seleccionarFuego() {
 	    this.hechizoSeleccionado = "fuego";
 	}
@@ -240,6 +249,8 @@ public class Mago {
 	public int getEnergiaMagica() {
 	    return this.energiaMagica;
 	}
+
+	
 
 
 	

@@ -102,6 +102,9 @@ public class Juego extends InterfaceJuego
 			}
 		}
 	}
+		
+		
+	
 	
 	
 		
@@ -179,13 +182,7 @@ public class Juego extends InterfaceJuego
 //				}
 				
 				
-			if (entorno.estaPresionada(' ')) {
-			    if (gondolf.getHechizoSeleccionado().equals("fuego")) {
-			        gondolf.lanzarFuego();
-			    } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
-			        gondolf.lanzarAgua();
-			    }
-			}
+			
 
 			if (entorno.mousePresente() && entorno.sePresionoBoton(1)) {
 			    menu.detectarClick(entorno.mouseX(), entorno.mouseY(), gondolf);
@@ -202,9 +199,20 @@ public class Juego extends InterfaceJuego
 				gondolf.variosFuegos(entorno);
 				gondolf.variasAguas(entorno);
 				
-				entorno.cambiarFont(null, 20, Color.RED);
-				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 650, 578);
+				
+				entorno.cambiarFont(null, 30, Color.RED);
+				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
 
+				//VIDA DEL MAGO
+				entorno.cambiarFont(null, 30, Color.GREEN);
+				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
+
+			
+				
+		//////////////////////////////////////////////////////////////////////////////////////7
+				
+	
+				
 		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
