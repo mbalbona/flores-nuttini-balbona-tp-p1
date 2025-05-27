@@ -27,7 +27,7 @@ public class Menu {
         this.botonFuegoAlto = 100;
         this.botonFuegoX = x - 40;
         this.botonFuegoY = y + 90;
-
+//da
         // Botón de AGUA
         this.botonAguaAncho = 100;
         this.botonAguaAlto = 100;
