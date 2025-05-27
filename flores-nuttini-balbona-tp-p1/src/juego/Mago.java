@@ -156,6 +156,7 @@ public class Mago {
 	    this.hechizoSeleccionado = "agua";
 	}
 
+	
 
 	
 	

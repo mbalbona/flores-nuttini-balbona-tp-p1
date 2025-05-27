@@ -134,9 +134,11 @@ public class Juego extends InterfaceJuego
 		this.rocas.dibujar(entorno);
 		this.menu.dibujar(entorno);
 		
+		
 		/////////////////// DIBUJAR A GONDOLF,MOVER,LANZAR///////////////////// 
 	
 		this.gondolf.dibujar(entorno);
+		
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			  gondolf.getDireccion(false); // mirar a la derecha
 			  if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
@@ -169,15 +171,27 @@ public class Juego extends InterfaceJuego
 		
 		
 		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK Y CANT HECHIZOS ///////////////////////
-			if (entorno.estaPresionada('F')) {  // F para fuego
-				  gondolf.seleccionarFuego();
-				}
-				if (entorno.estaPresionada('A')) {  // A para agua
-				  gondolf.seleccionarAgua();
-				}
+//			if (entorno.estaPresionada('F')) {  // F para fuego
+//				  gondolf.seleccionarFuego();
+//				}
+//				if (entorno.estaPresionada('A')) {  // A para agua
+//				  gondolf.seleccionarAgua();
+//				}
 				
 				
-				if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
+			if (entorno.estaPresionada(' ')) {
+			    if (gondolf.getHechizoSeleccionado().equals("fuego")) {
+			        gondolf.lanzarFuego();
+			    } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
+			        gondolf.lanzarAgua();
+			    }
+			}
+
+			if (entorno.mousePresente() && entorno.sePresionoBoton(1)) {
+			    menu.detectarClick(entorno.mouseX(), entorno.mouseY(), gondolf);
+			}
+			
+			if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
 					if (gondolf.getHechizoSeleccionado().equals("fuego")) {
 				      gondolf.lanzarFuego();
 				  } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
@@ -220,8 +234,9 @@ public class Juego extends InterfaceJuego
 					m.dibujar(entorno);
 					this.contadorMurcielagos++;
 				}
-			}
+			
 		}
+	}
 	}
 
 	@SuppressWarnings("unused")
