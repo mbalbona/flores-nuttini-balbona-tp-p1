@@ -16,16 +16,23 @@ public class Juego extends InterfaceJuego
 	private boolean enterPresionado = false;
 	private int cantMurcielagosMatados = 0;
 	private int contadorMurcielagos = 0;
-	Mago gondolf;
-	Murcielago[] murcielagos;
-	Roca rocas;
-	Fondo fondo;
-	Menu menu;
 	
-	Clip game_music;
-	
-	private boolean enMenu = true;
+	//PERSONAJES - COSAS
+	private Mago gondolf;
+	private Murcielago[] murcielagos;
+	private Roca rocas;
+	private Fondo fondo;
+	private Menu menu;
 	private Image imagenMenu;
+	private Image imagenGameOver;
+	
+	//IMAGENES - SONIDOS
+	private Clip game_music;
+	private Clip sonidoGameOver;
+	private boolean juegoTerminado = false;
+	private boolean sonidoGameOverReproducido = false;
+	private boolean enMenu = true;
+	
 	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
@@ -53,9 +60,10 @@ public class Juego extends InterfaceJuego
 		this.random = new Random();
 		this.menu = new Menu();
 		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
-
-		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
-		game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+		this.imagenGameOver = Herramientas.cargarImagen("imagenes/game-over.png");
+		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
+		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
+		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
 		///MOBS
 		this.murcielagos = new Murcielago[this.cantMurcielagosTotales];	
@@ -66,6 +74,18 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
+
+		if (juegoTerminado) {
+		    entorno.dibujarImagen(imagenGameOver, entorno.ancho() / 2, entorno.alto() / 2, 0);
+
+		    if (!sonidoGameOverReproducido) {
+		        sonidoGameOver.start();
+		        sonidoGameOverReproducido = true;
+		    }
+
+		    return; //COLOCAMOS ARRIBA DE TODO PARA QUE NO SE SIGAN DIBUJANDO MAS LOS PERSONAJES
+		}
+		
 		/////////////////////////MENU DE JUEGO INICIO//////////////////////////////////////
 		if (enMenu) {
 		    entorno.dibujarImagen(imagenMenu, entorno.ancho() / 2, entorno.alto() / 2, 0);
@@ -86,17 +106,17 @@ public class Juego extends InterfaceJuego
 		Point puntoLimiteSuperiorMago = new Point (this.gondolf.getX(), gondolf.limiteSuperior());    //Delimita en un punto el límite superior del mago
 		Point puntoLimiteInferiorMago = new Point (this.gondolf.getX(), gondolf.limiteInferior());    //Delimita en un punto el límite inferior del mago
 		
-		/////////////////// DIBUJAR FONDO Y ROCAS DENTRO DEL MAPA/////////////////////
+		/////////////////// DIBUJAR A GONDOLF, HECHIZOS, FONDO Y ROCAS DENTRO DEL MAPA/////////////////////
 		
 		this.fondo.dibujar(entorno);
 		this.rocas.dibujar(entorno);
 		this.menu.dibujar(entorno);
-		
-		
-		/////////////////// DIBUJAR A GONDOLF,MOVER,LANZAR///////////////////// 
-	
 		this.gondolf.dibujar(entorno);
+		this.gondolf.variosFuegos(entorno);
+		this.gondolf.variasAguas(entorno);
 		
+		///////////////////GONDOLF, MOVERSE, LANZAR HECHIZOS///////////////////// 
+	
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			  gondolf.getDireccion(false); // mirar a la derecha
 			  if (gondolf.dentroLimiteDerecho() && rocas.limiteIzquierdoEnPiedra(puntoLimiteDerechoMago, rocas.rocas)==false) {
@@ -125,20 +145,7 @@ public class Juego extends InterfaceJuego
 			      this.gondolf.moverAbajo();
 			  }
 			}
-				
-		
-		
-		//////////////////////// LANZAR FUEGO O AGUA CON 1 CLICK Y CANT HECHIZOS ///////////////////////
-//			if (entorno.estaPresionada('F')) {  // F para fuego
-//				  gondolf.seleccionarFuego();
-//				}
-//				if (entorno.estaPresionada('A')) {  // A para agua
-//				  gondolf.seleccionarAgua();
-//				}
-				
-				
-			
-
+	
 			if (entorno.mousePresente() && entorno.sePresionoBoton(1)) {
 			    menu.detectarClick(entorno.mouseX(), entorno.mouseY(), gondolf);
 			}
@@ -150,11 +157,7 @@ public class Juego extends InterfaceJuego
 				      gondolf.lanzarAgua();
 				  }
 				}
-				
-				gondolf.variosFuegos(entorno);
-				gondolf.variasAguas(entorno);
-				
-				
+				//ENERGIA
 				entorno.cambiarFont(null, 30, Color.RED);
 				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
 
@@ -209,13 +212,20 @@ public class Juego extends InterfaceJuego
 		//entorno.escribirTexto(this.contadorMurcielagos + "/" + this.cantMurcielagos, maxMurcielagosPantalla, altoPantalla, 10, 10);
 		
 		//////////////////////FINALIZACION DE JUEGO POR VIDA AGOTADA (GAME OVER)////////////////////////
-		if(this.gondolf.getVida() <= 0) {
-			System.exit(0);
+		if (this.gondolf.getVida() <= 0) {
+		    juegoTerminado = true;
+		    game_music.stop(); 
+		    return;
 		}
+
+
 		//////////////////////FINALIZACION DE JUEGO POR HABER MATADO A LOS 50 MURCIELAGOS///////////////////////
 		else if(this.cantMurcielagosMatados == 50){
 			System.out.println("Ganaste");
 		}
+		
+		
+		
 	}
 	
 	private void añadirMurcielagoEnPosicionAleatoria() {
@@ -258,6 +268,8 @@ public class Juego extends InterfaceJuego
 		}
 	}
 	
+	
+	
 	public int cantMobsActivos() {
 		int aux = 0;
 		for(int i = 0; i < cantMurcielagosTotales; i++) {
@@ -267,6 +279,15 @@ public class Juego extends InterfaceJuego
 		}
 		return aux;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args)
