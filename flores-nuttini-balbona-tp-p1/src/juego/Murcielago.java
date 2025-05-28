@@ -11,16 +11,18 @@ public class Murcielago {
 	private double escala;
 	private int vida;
 	private int defensa;
+	private int daño;
 	private boolean estaVivo;
 	Image imgMurcielago;
 	
 	public Murcielago() {
 		this.x = -100;
 		this.y = -100;
-		this.velocidad = 3;
+		this.velocidad = 5;
 		this.escala = 0.1;
 		this.vida = 100;
 		this.defensa = 100;
+		this.daño = 10;
 		this.setEstaVivo(true);
 		imgMurcielago = Herramientas.cargarImagen("imagenes/bat.gif");
 	}
@@ -71,6 +73,14 @@ public class Murcielago {
 		this.estaVivo = estaVivo;
 	}
 
+	public int getDaño() {
+		return daño;
+	}
+
+	public void setDaño(int daño) {
+		this.daño = daño;
+	}
+
 	//////////////////////// DIBUJAR MURCIELAGO ///////////////////////
 	public void dibujar(Entorno e) {
 		e.dibujarImagen(this.imgMurcielago, this.x, this.y, 0, this.escala);
@@ -84,7 +94,7 @@ public class Murcielago {
 
 		/// Calcula la distancia total entre el murciélago y el jugador
 		///OBTENEMOS LA DISTANCIA MAS CORTA EN LINEA RECTA 
-		///ENTRE DOS PUNTOS EN UN MAPA (EN ESTE CASO LA PANTALLA) PERMITIENDONOS SABER CUANTO "PASOS" DEBE DAR
+		///ENTRE DOS PUNTOS EN UN MAPA (EN ESTE CASO LA PANTALLA) PERMITIENDONOS SABER CUANTOS "PASOS" DEBE DAR
 		///EL MURCIELAGO PARA LLEGAR AL JUGADOR COMBINANDO MOVIMIENTOS VERTICALES Y HORIZONTALES.
 		double distancia = Math.sqrt(x * x + y * y);   
 

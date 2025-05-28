@@ -156,6 +156,13 @@ public class Mago {
 	public int getVida() {
 	    return this.vida;
 	}
+	public void setVida(int vida) {
+	    this.vida = vida;
+	}
+	
+	public void quitarVida(int dañoMurcielago) {
+		this.setVida(this.getVida() - dañoMurcielago);
+	}
 
 	public void seleccionarFuego() {
 	    this.hechizoSeleccionado = "fuego";

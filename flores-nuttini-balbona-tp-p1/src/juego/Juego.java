@@ -63,52 +63,6 @@ public class Juego extends InterfaceJuego
 		this.entorno.iniciar();
 	}
 	
-	private void añadirMurcielagoEnPosicionAleatoria() {
-		for(int i = 0; i < this.cantMurcielagos;i++) {
-			if(this.murcielagos[i] == null) {
-				int nuevaX;
-				int nuevaY;
-				int anchoJugable = this.anchoPantalla - this.menu.getAncho();
-				
-				int bordeRandom = this.random.nextInt(4); ///Se elige aleatoriamente un numero que representa los lados
-				
-				switch(bordeRandom) {
-					case 0: ///Borde Superior
-						nuevaX = this.random.nextInt(anchoJugable);
-						nuevaY = -this.margenAparicion;
-						break;
-					case 1: ///Borde inferior
-						nuevaX = this.random.nextInt(anchoJugable);
-						nuevaY = this.altoPantalla + this.margenAparicion;
-						break;
-					case 2: ///Borde izquierdo
-						nuevaX = -this.margenAparicion;
-						nuevaY = this.random.nextInt(this.altoPantalla);
-						break;
-					case 3: ///Borde Derecho
-						nuevaX = anchoJugable;
-						nuevaY = this.random.nextInt(this.altoPantalla);
-						break;
-					default:
-						nuevaX = -this.margenAparicion;
-						nuevaY = -this.margenAparicion;
-						break;
-						
-				}
-				this.murcielagos[i] = new Murcielago();
-				this.murcielagos[i].setX(nuevaX);
-				this.murcielagos[i].setY(nuevaY);
-				return;
-			}
-		}
-	}
-		
-		
-	
-	
-	
-		
-	
 	public void tick()
 	{
 		/////////////////////////MENU DE JUEGO INICIO//////////////////////////////////////
@@ -216,6 +170,7 @@ public class Juego extends InterfaceJuego
 		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
+			
 			System.out.println("Tiempo de aparicion:"+ this.contadorAparicion);
 			añadirMurcielagoEnPosicionAleatoria();
 			this.contadorAparicion = 0;
@@ -237,14 +192,61 @@ public class Juego extends InterfaceJuego
 				if(distanciaActual <= margenDistancia) {
 					System.out.println("Murcielago alcanczo al jugador");
 					this.murcielagos[i] = null;
+					this.gondolf.quitarVida(m.getDaño());
 				}
 				else {
 					m.dibujar(entorno);
 					this.contadorMurcielagos++;
 				}
 			
+			}
 		}
+		
+		
+		if(this.gondolf.getVida() <= 0) {
+			System.exit(0);
+		}
+		
 	}
+	
+	private void añadirMurcielagoEnPosicionAleatoria() {
+		for(int i = 0; i < this.cantMurcielagos;i++) {
+			if(this.murcielagos[i] == null) {
+				int nuevaX;
+				int nuevaY;
+				int anchoJugable = this.anchoPantalla - this.menu.getAncho();
+				
+				int bordeRandom = this.random.nextInt(4); ///Se elige aleatoriamente un numero que representa los lados
+				
+				switch(bordeRandom) {
+					case 0: ///Borde Superior
+						nuevaX = this.random.nextInt(anchoJugable);
+						nuevaY = -this.margenAparicion;
+						break;
+					case 1: ///Borde inferior
+						nuevaX = this.random.nextInt(anchoJugable);
+						nuevaY = this.altoPantalla + this.margenAparicion;
+						break;
+					case 2: ///Borde izquierdo
+						nuevaX = -this.margenAparicion;
+						nuevaY = this.random.nextInt(this.altoPantalla);
+						break;
+					case 3: ///Borde Derecho
+						nuevaX = anchoJugable;
+						nuevaY = this.random.nextInt(this.altoPantalla);
+						break;
+					default:
+						nuevaX = -this.margenAparicion;
+						nuevaY = -this.margenAparicion;
+						break;
+						
+				}
+				this.murcielagos[i] = new Murcielago();
+				this.murcielagos[i].setX(nuevaX);
+				this.murcielagos[i].setY(nuevaY);
+				return;
+			}
+		}
 	}
 
 	@SuppressWarnings("unused")
