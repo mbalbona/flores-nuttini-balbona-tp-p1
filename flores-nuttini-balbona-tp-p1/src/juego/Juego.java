@@ -171,7 +171,7 @@ public class Juego extends InterfaceJuego
 				
 	
 				
-		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
+		////////////////////////CONTROLAR APARICIONES MURCIELAGOS/////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
 			if(cantMobsActivos() < maxMurcielagosPantalla) {
@@ -182,8 +182,9 @@ public class Juego extends InterfaceJuego
 			}
 			this.contadorAparicion = 0;
 		}
+		/////////////////////////////////////////////////////////////////////////////////////
 		
-		chequearColisionesConHechizos();
+		chequearColisionesConHechizos(); //LLAMAMOS AL METODO PARA ELIMINAR MURCIELAGOS ANTES DE DIBUJAR
 
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
@@ -205,13 +206,13 @@ public class Juego extends InterfaceJuego
 		        }
 		    }
 		}
-
+		////////////////////////////////////////////////////////////////////////////////
 		
 
 		//////////////////////CANTIDAD DE MURCIELAGOS TOTALES Y CANTIDAD DE MURCIELAGOS ACTUALES EN PANTALLA///////////////////////
 		//entorno.escribirTexto(this.contadorMurcielagos + "/" + this.cantMurcielagos, maxMurcielagosPantalla, altoPantalla, 10, 10);
 		
-		//////////////////////FINALIZACION DE JUEGO POR VIDA AGOTADA (GAME OVER)////////////////////////
+		//////////////////////FINALIZAR JUEGO Y MOSTRAR IMAGEN-SONIDO GAME-OVER)/////////////////////
 		if (this.gondolf.getVida() <= 0) {
 		    juegoTerminado = true;
 		    game_music.stop(); 
@@ -227,6 +228,8 @@ public class Juego extends InterfaceJuego
 		
 		
 	}
+		//////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	private void añadirMurcielagoEnPosicionAleatoria() {
 		for(int i = 0; i < this.cantMurcielagosTotales;i++) {
@@ -269,10 +272,6 @@ public class Juego extends InterfaceJuego
 		
 	}
 
-	
-	
-	
-	
 	public int cantMobsActivos() {
 		int aux = 0;
 		for(int i = 0; i < cantMurcielagosTotales; i++) {
@@ -282,6 +281,8 @@ public class Juego extends InterfaceJuego
 		}
 		return aux;
 	}
+	
+	//////////////////////////METODOS MAGO ELIMINA MURCIELAGOS//////////////////////////////
 	
 	private boolean magoFuegoColisionaCon(Murcielago m) {
 	    return gondolf.estaFuegoActivo() &&
@@ -314,7 +315,7 @@ public class Juego extends InterfaceJuego
 	    }
 	}
 
-	
+	/////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	
