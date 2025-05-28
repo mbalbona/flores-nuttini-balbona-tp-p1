@@ -14,6 +14,8 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
+	private int cantMurcielagosMatados;
+	private int contadorMurcielagos;
 	Mago gondolf;
 	Murcielago[] murcielagos;
 	Roca rocas;
@@ -28,6 +30,7 @@ public class Juego extends InterfaceJuego
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
 	private static int cantMurcielagos = 50;
+	private static int maxMurcielagosPantalla = 10;
 	private int intervaloAparicion = 120;
 	private int contadorAparicion = 0;
 	
@@ -36,7 +39,7 @@ public class Juego extends InterfaceJuego
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
 	private int margenAparicion = 50;
-	private int contadorMurcielagos = 0;
+
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -54,7 +57,8 @@ public class Juego extends InterfaceJuego
 		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
 		game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
-		
+		this.contadorMurcielagos = 0;
+		this.cantMurcielagosMatados = 0;
 		
 		///MOBS
 		this.murcielagos = new Murcielago[this.cantMurcielagos];	
@@ -171,9 +175,12 @@ public class Juego extends InterfaceJuego
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
 			
-			System.out.println("Tiempo de aparicion:"+ this.contadorAparicion);
-			añadirMurcielagoEnPosicionAleatoria();
-			this.contadorAparicion = 0;
+			if(this.contadorMurcielagos < maxMurcielagosPantalla) {
+				System.out.println("Tiempo de aparicion:"+ this.contadorAparicion);
+				añadirMurcielagoEnPosicionAleatoria();
+				this.contadorAparicion = 0;
+				this.contadorMurcielagos++;
+			}
 		}
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
@@ -202,11 +209,14 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		
-		
+		//////////////////////FINALIZACION DE JUEGO POR VIDA AGOTADA (GAME OVER)////////////////////////
 		if(this.gondolf.getVida() <= 0) {
 			System.exit(0);
 		}
-		
+		//////////////////////FINALIZACION DE JUEGO POR HABER MATADO A LOS 50 MURCIELAGOS///////////////////////
+		else if(this.cantMurcielagosMatados == 50){
+			System.out.println("Ganaste");
+		}
 	}
 	
 	private void añadirMurcielagoEnPosicionAleatoria() {
