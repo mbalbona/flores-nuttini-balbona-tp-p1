@@ -14,8 +14,8 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
-	private int cantMurcielagosMatados;
-	private int contadorMurcielagos;
+	private int cantMurcielagosMatados = 0;
+	private int contadorMurcielagos = 0;
 	Mago gondolf;
 	Murcielago[] murcielagos;
 	Roca rocas;
@@ -29,9 +29,9 @@ public class Juego extends InterfaceJuego
 	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
-	private static int cantMurcielagos = 50;
+	private static int cantMurcielagosTotales = 50;
 	private static int maxMurcielagosPantalla = 10;
-	private int intervaloAparicion = 120;
+	private int intervaloAparicion = 100;
 	private int contadorAparicion = 0;
 	
 	///DIMENSIONES DE LA VENTANA DE JUEGO
@@ -57,11 +57,8 @@ public class Juego extends InterfaceJuego
 		game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
 		game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
-		this.contadorMurcielagos = 0;
-		this.cantMurcielagosMatados = 0;
-		
 		///MOBS
-		this.murcielagos = new Murcielago[this.cantMurcielagos];	
+		this.murcielagos = new Murcielago[this.cantMurcielagosTotales];	
 			
 		///SE INICIA EL ENTORNO DEL JUEGO
 		this.entorno.iniciar();
@@ -174,17 +171,17 @@ public class Juego extends InterfaceJuego
 		////////////////////////CONTROL DE APARICION/////////////////////////////////////////////////////
 		this.contadorAparicion++;
 		if(this.contadorAparicion >= this.intervaloAparicion) {
-			
-			if(this.contadorMurcielagos < maxMurcielagosPantalla) {
-				System.out.println("Tiempo de aparicion:"+ this.contadorAparicion);
+			if(cantMobsActivos() < maxMurcielagosPantalla) {
+				System.out.println("Mobs Activos:" + cantMobsActivos());
 				añadirMurcielagoEnPosicionAleatoria();
-				this.contadorAparicion = 0;
-				this.contadorMurcielagos++;
+			}else {
+				System.out.println("Maxima cantidad de mobs en pantalla alcanzado:" + maxMurcielagosPantalla);
 			}
+			this.contadorAparicion = 0;
 		}
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
-		for(int i = 0; i < this.cantMurcielagos; i++) {
+		for(int i = 0; i < this.cantMurcielagosTotales; i++) {
 			Murcielago m = this.murcielagos[i];
 			if(m != null) {
 				m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
@@ -208,6 +205,8 @@ public class Juego extends InterfaceJuego
 			
 			}
 		}
+		//////////////////////CANTIDAD DE MURCIELAGOS TOTALES Y CANTIDAD DE MURCIELAGOS ACTUALES EN PANTALLA///////////////////////
+		//entorno.escribirTexto(this.contadorMurcielagos + "/" + this.cantMurcielagos, maxMurcielagosPantalla, altoPantalla, 10, 10);
 		
 		//////////////////////FINALIZACION DE JUEGO POR VIDA AGOTADA (GAME OVER)////////////////////////
 		if(this.gondolf.getVida() <= 0) {
@@ -220,7 +219,7 @@ public class Juego extends InterfaceJuego
 	}
 	
 	private void añadirMurcielagoEnPosicionAleatoria() {
-		for(int i = 0; i < this.cantMurcielagos;i++) {
+		for(int i = 0; i < this.cantMurcielagosTotales;i++) {
 			if(this.murcielagos[i] == null) {
 				int nuevaX;
 				int nuevaY;
@@ -257,6 +256,16 @@ public class Juego extends InterfaceJuego
 				return;
 			}
 		}
+	}
+	
+	public int cantMobsActivos() {
+		int aux = 0;
+		for(int i = 0; i < cantMurcielagosTotales; i++) {
+			if(this.murcielagos[i] != null) {
+				aux++;
+			}
+		}
+		return aux;
 	}
 
 	@SuppressWarnings("unused")

@@ -18,7 +18,7 @@ public class Murcielago {
 	public Murcielago() {
 		this.x = -100;
 		this.y = -100;
-		this.velocidad = 5;
+		this.velocidad = 2;
 		this.escala = 0.1;
 		this.vida = 100;
 		this.defensa = 100;
