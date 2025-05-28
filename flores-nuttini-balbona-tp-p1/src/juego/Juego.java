@@ -183,31 +183,31 @@ public class Juego extends InterfaceJuego
 			this.contadorAparicion = 0;
 		}
 		
+		chequearColisionesConHechizos();
+
+		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
-		for(int i = 0; i < this.cantMurcielagosTotales; i++) {
-			Murcielago m = this.murcielagos[i];
-			if(m != null) {
-				m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
-				
-				int margenDistancia = (int)m.getVelocidad();
-				
-				///Calculo de distancia real
-				double auxX = this.gondolf.getX() - m.getX();
-				double auxY = this.gondolf.getY() - m.getY();
-				double distanciaActual = Math.sqrt(auxX * auxX + auxY * auxY);
-				
-				if(distanciaActual <= margenDistancia) {
-					System.out.println("Murcielago alcanczo al jugador");
-					this.murcielagos[i] = null;
-					this.gondolf.quitarVida(m.getDaño());
-				}
-				else {
-					m.dibujar(entorno);
-					this.contadorMurcielagos++;
-				}
-			
-			}
+		for (int i = 0; i < this.cantMurcielagosTotales; i++) {
+		    Murcielago m = this.murcielagos[i];
+		    if (m != null) {
+		        m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
+
+		        int margenDistancia = (int)m.getVelocidad();
+		        double auxX = this.gondolf.getX() - m.getX();
+		        double auxY = this.gondolf.getY() - m.getY();
+		        double distanciaActual = Math.sqrt(auxX * auxX + auxY * auxY);
+
+		        if (distanciaActual <= margenDistancia) {
+		            this.murcielagos[i] = null;
+		            this.gondolf.quitarVida(m.getDaño());
+		        } else {
+		            m.dibujar(entorno);
+		        }
+		    }
 		}
+
+		
+
 		//////////////////////CANTIDAD DE MURCIELAGOS TOTALES Y CANTIDAD DE MURCIELAGOS ACTUALES EN PANTALLA///////////////////////
 		//entorno.escribirTexto(this.contadorMurcielagos + "/" + this.cantMurcielagos, maxMurcielagosPantalla, altoPantalla, 10, 10);
 		
@@ -236,7 +236,7 @@ public class Juego extends InterfaceJuego
 				int anchoJugable = this.anchoPantalla - this.menu.getAncho();
 				
 				int bordeRandom = this.random.nextInt(4); ///Se elige aleatoriamente un numero que representa los lados
-				
+	 			
 				switch(bordeRandom) {
 					case 0: ///Borde Superior
 						nuevaX = this.random.nextInt(anchoJugable);
@@ -266,7 +266,10 @@ public class Juego extends InterfaceJuego
 				return;
 			}
 		}
+		
 	}
+
+	
 	
 	
 	
@@ -280,8 +283,37 @@ public class Juego extends InterfaceJuego
 		return aux;
 	}
 	
-	
-	
+	private boolean magoFuegoColisionaCon(Murcielago m) {
+	    return gondolf.estaFuegoActivo() &&
+	           distancia(m.getX(), m.getY(), gondolf.getFuegoX(), gondolf.getFuegoY()) < 30;
+	}
+
+	private boolean magoAguaColisionaCon(Murcielago m) {
+	    return gondolf.estaAguaActivo() &&
+	           distancia(m.getX(), m.getY(), gondolf.getAguaX(), gondolf.getAguaY()) < 30;
+	}
+
+	private double distancia(int x1, int y1, int x2, int y2) {
+	    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	}
+
+	private void chequearColisionesConHechizos() {
+	    for (int i = 0; i < murcielagos.length; i++) {
+	        Murcielago murcielago = murcielagos[i];
+	        if (murcielago != null && murcielago.getEstaVivo()) {
+	            if (magoFuegoColisionaCon(murcielago)) {
+	                murcielagos[i] = null; // lo eliminás del arreglo
+	                gondolf.desactivarFuego();
+	                cantMurcielagosMatados++;
+	            } else if (magoAguaColisionaCon(murcielago)) {
+	                murcielagos[i] = null; 
+	                gondolf.desactivarAgua();
+	                cantMurcielagosMatados++;
+	            }
+	        }
+	    }
+	}
+
 	
 	
 	

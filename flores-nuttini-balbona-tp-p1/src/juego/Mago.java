@@ -257,7 +257,38 @@ public class Mago {
 	    return this.energiaMagica;
 	}
 
-	
+	public int getFuegoX() {
+	    return fuegoX;
+	}
+
+	public int getFuegoY() {
+	    return fuegoY;
+	}
+
+	public boolean estaFuegoActivo() {
+	    return fuegoActivo;
+	}
+
+	public void desactivarFuego() {
+	    this.fuegoActivo = false;
+	}
+
+	public int getAguaX() {
+	    return aguaX;
+	}
+
+	public int getAguaY() {
+	    return aguaY;
+	}
+
+	public boolean estaAguaActivo() {
+	    return aguaActivo;
+	}
+
+	public void desactivarAgua() {
+	    this.aguaActivo = false;
+	}
+
 
 
 	
