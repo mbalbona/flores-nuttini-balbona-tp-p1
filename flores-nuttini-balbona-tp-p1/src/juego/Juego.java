@@ -25,6 +25,7 @@ public class Juego extends InterfaceJuego
 	private Menu menu;
 	private Image imagenMenu;
 	private Image imagenGameOver;
+	private Image imagenVictoria;
 	
 	//IMAGENES - SONIDOS
 	private Clip game_music;
@@ -32,6 +33,10 @@ public class Juego extends InterfaceJuego
 	private boolean juegoTerminado = false;
 	private boolean sonidoGameOverReproducido = false;
 	private boolean enMenu = true;
+	private Clip sonidoVictoria;
+	private boolean sonidoVictoriaReproducido = false;
+	private boolean juegoGanado = false;
+
 	
 	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
@@ -60,6 +65,8 @@ public class Juego extends InterfaceJuego
 		this.random = new Random();
 		this.menu = new Menu();
 		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
+		this.imagenVictoria = Herramientas.cargarImagen("imagenes/victoria.png");
+		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
 		this.imagenGameOver = Herramientas.cargarImagen("imagenes/game-over.png");
 		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
 		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
@@ -74,6 +81,19 @@ public class Juego extends InterfaceJuego
 	
 	public void tick()
 	{
+		
+		if (juegoGanado) {
+		    entorno.dibujarImagen(imagenVictoria, entorno.ancho() / 2, entorno.alto() / 2, 0);
+		    
+		    if (!sonidoVictoriaReproducido) {
+		        sonidoVictoria.start();
+		        sonidoVictoriaReproducido = true;
+		        game_music.stop();
+		    }
+
+		    return; // Evita seguir dibujando el juego
+		}
+
 
 		if (juegoTerminado) {
 		    entorno.dibujarImagen(imagenGameOver, entorno.ancho() / 2, entorno.alto() / 2, 0);
@@ -218,15 +238,10 @@ public class Juego extends InterfaceJuego
 		    game_music.stop(); 
 		    return;
 		}
-
-
-		//////////////////////FINALIZACION DE JUEGO POR HABER MATADO A LOS 50 MURCIELAGOS///////////////////////
-		else if(this.cantMurcielagosMatados == 50){
-			System.out.println("Ganaste");
+		else if (this.cantMurcielagosMatados == 3) {
+		    juegoGanado = true;
 		}
-		
-		
-		
+
 	}
 		//////////////////////////////////////////////////////////////////////////////////////////////
 	
