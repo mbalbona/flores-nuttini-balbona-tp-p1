@@ -26,6 +26,7 @@ public class Juego extends InterfaceJuego
 	private Image imagenMenu;
 	private Image imagenGameOver;
 	private Image imagenVictoria;
+	private Oleada gestionadorOleadas;
 	
 	//IMAGENES - SONIDOS
 	private Clip game_music;
@@ -73,12 +74,26 @@ public class Juego extends InterfaceJuego
 		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
 		///MOBS
-		this.murcielagos = new Murcielago[this.cantMurcielagosTotales];	
-			
+		this.murcielagos = new Murcielago[cantMurcielagosTotales];	
+		
+		
+		////SETEAMOS ARRAY DE MURCIELAGOS EN NULL
+		for(int i = 0; i < cantMurcielagosTotales; i++) {
+			murcielagos[i] = null;
+		}
+		
+		////INICIALIZAMOS GESTOR DE OLEADAS
+		int tiempoDescanso = 300;
+		int murcielagosBase = 5;
+		int incrementoMurcielagos = 2;
+		this.gestionadorOleadas = new Oleada(tiempoDescanso, murcielagosBase, incrementoMurcielagos);
+		
 		///SE INICIA EL ENTORNO DEL JUEGO
 		this.entorno.iniciar();
 	}
 	
+	//RELACION TIEMPO Y TICKS
+	//1 SEGUNDO = 100 TICKS
 	public void tick()
 	{
 		
@@ -187,20 +202,24 @@ public class Juego extends InterfaceJuego
 
 			
 				
-		//////////////////////////////////////////////////////////////////////////////////////7
-				
-	
-				
-		////////////////////////CONTROLAR APARICIONES MURCIELAGOS/////////////////////////////
-		this.contadorAparicion++;
-		if(this.contadorAparicion >= this.intervaloAparicion) {
-			if(cantMobsActivos() < maxMurcielagosPantalla) {
-				System.out.println("Mobs Activos:" + cantMobsActivos());
-				añadirMurcielagoEnPosicionAleatoria();
-			}else {
-				System.out.println("Maxima cantidad de mobs en pantalla alcanzado:" + maxMurcielagosPantalla);
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		////////////////////////////GESTION DE OLEADAS///////////////////////////////////////
+		int mobsActivos = cantMobsActivos();
+		this.gestionadorOleadas.actualizar(mobsActivos);
+		
+		if(this.gestionadorOleadas.necesitaGenerarEnemigo()) {
+			this.contadorAparicion++;
+			if(this.contadorAparicion >= this.intervaloAparicion) {
+				if(cantMobsActivos() < maxMurcielagosPantalla) {
+					añadirMurcielagoEnPosicionAleatoria();
+					this.gestionadorOleadas.mobGenerado();
+					System.out.println("Mobs Activos:" + cantMobsActivos());
+				}else {
+					System.out.println("Maxima cantidad de mobs en pantalla alcanzado:" + maxMurcielagosPantalla);
+				}
+				this.contadorAparicion = 0;
 			}
-			this.contadorAparicion = 0;
 		}
 		/////////////////////////////////////////////////////////////////////////////////////
 		
@@ -208,7 +227,7 @@ public class Juego extends InterfaceJuego
 
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
-		for (int i = 0; i < this.cantMurcielagosTotales; i++) {
+		for (int i = 0; i < cantMurcielagosTotales; i++) {
 		    Murcielago m = this.murcielagos[i];
 		    if (m != null) {
 		        m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
@@ -221,6 +240,7 @@ public class Juego extends InterfaceJuego
 		        if (distanciaActual <= margenDistancia) {
 		            this.murcielagos[i] = null;
 		            this.gondolf.quitarVida(m.getDaño());
+		            this.gestionadorOleadas.mobDerrotado();
 		        } else {
 		            m.dibujar(entorno);
 		        }
@@ -229,8 +249,15 @@ public class Juego extends InterfaceJuego
 		////////////////////////////////////////////////////////////////////////////////
 		
 
-		//////////////////////CANTIDAD DE MURCIELAGOS TOTALES Y CANTIDAD DE MURCIELAGOS ACTUALES EN PANTALLA///////////////////////
-		//entorno.escribirTexto(this.contadorMurcielagos + "/" + this.cantMurcielagos, maxMurcielagosPantalla, altoPantalla, 10, 10);
+		//////////////////////TEXTOS RELACIONADOS CON MOBS///////////////////////
+		entorno.cambiarFont("consola", 20, Color.WHITE);
+		entorno.escribirTexto(this.cantMurcielagosMatados + "/" + cantMurcielagosTotales, 525, 20);
+		
+		entorno.cambiarFont("consola", 20, Color.WHITE);
+		entorno.escribirTexto("Cant Mobs Oleada:" + this.gestionadorOleadas.getmurcielagosEnEstaOleada(), 400, 40);
+		
+		entorno.cambiarFont("consola", 20, Color.WHITE);
+		entorno.escribirTexto("Oleada:" + this.gestionadorOleadas.getNumOleadaActual(), 10, 20);
 		
 		//////////////////////FINALIZAR JUEGO Y MOSTRAR IMAGEN-SONIDO GAME-OVER)/////////////////////
 		if (this.gondolf.getVida() <= 0) {
@@ -238,7 +265,7 @@ public class Juego extends InterfaceJuego
 		    game_music.stop(); 
 		    return;
 		}
-		else if (this.cantMurcielagosMatados == 3) {
+		else if (this.cantMurcielagosMatados == 50) {
 		    juegoGanado = true;
 		}
 
