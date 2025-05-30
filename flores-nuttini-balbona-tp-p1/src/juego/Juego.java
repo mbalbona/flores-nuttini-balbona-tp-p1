@@ -34,16 +34,15 @@ public class Juego extends InterfaceJuego
 	
 	//IMAGENES - SONIDOS
 	private Clip game_music;
-	private Clip sonidoGameOver;
-	private boolean juegoTerminado = false;
-	private boolean sonidoGameOverReproducido = false;
-	private boolean enMenu = true;
 	private Clip sonidoVictoria;
+	private Clip sonidoGameOver;
 	private boolean sonidoVictoriaReproducido = false;
 	private boolean juegoGanado = false;
+	private boolean sonidoGameOverReproducido = false;
+	private boolean juegoTerminado = false;
+	private boolean enMenu = true;
+	
 
-	
-	
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
 	private static int cantMurcielagosTotales = 50;
@@ -112,7 +111,7 @@ public class Juego extends InterfaceJuego
 		        game_music.stop();
 		    }
 
-		    return; // Evita seguir dibujando el juego
+		    return; 
 		}
 
 
@@ -293,7 +292,11 @@ public class Juego extends InterfaceJuego
 		    game_music.stop(); 
 		    return;
 		}
+<<<<<<< Updated upstream
 		else if (this.cantMurcielagosMatados == 50) {
+=======
+		else if (this.cantMurcielagosMatados == 10) {
+>>>>>>> Stashed changes
 		    juegoGanado = true;
 		}
 
