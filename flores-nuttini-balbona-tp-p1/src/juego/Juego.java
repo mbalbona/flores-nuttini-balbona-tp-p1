@@ -16,6 +16,7 @@ public class Juego extends InterfaceJuego
 	private boolean enterPresionado = false;
 	private int cantMurcielagosMatados = 0;
 	private int contadorMurcielagos = 0;
+	private Point posMouse = new Point(0,0);
 	
 	//PERSONAJES - COSAS
 	private Mago gondolf;
@@ -27,6 +28,7 @@ public class Juego extends InterfaceJuego
 	private Image imagenGameOver;
 	private Image imagenVictoria;
 	private Oleada gestionadorOleadas;
+	private HechizoFuego hechizoFuego;
 	
 	//IMAGENES - SONIDOS
 	private Clip game_music;
@@ -65,6 +67,7 @@ public class Juego extends InterfaceJuego
 		this.fondo = new Fondo();
 		this.random = new Random();
 		this.menu = new Menu();
+		this.hechizoFuego = new HechizoFuego(gondolf.getX(), gondolf.getY(), posMouse);
 		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
 		this.imagenVictoria = Herramientas.cargarImagen("imagenes/victoria.png");
 		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
@@ -185,20 +188,31 @@ public class Juego extends InterfaceJuego
 			    menu.detectarClick(entorno.mouseX(), entorno.mouseY(), gondolf);
 			}
 			
-			if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
-					if (gondolf.getHechizoSeleccionado().equals("fuego")) {
-				      gondolf.lanzarFuego();
-				  } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
-				      gondolf.lanzarAgua();
-				  }
+			if(entorno.estaPresionado(entorno.BOTON_IZQUIERDO) || entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+				if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+					posMouse.x = entorno.mouseX();
+					posMouse.y = entorno.mouseY();
+					hechizoFuego.setX(gondolf.getX());
+					hechizoFuego.setY(gondolf.getY());
+				}	
+				hechizoFuego.avanzar(entorno, posMouse.x, posMouse.y);	
 				}
-				//ENERGIA
-				entorno.cambiarFont(null, 30, Color.RED);
-				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
-
-				//VIDA DEL MAGO
-				entorno.cambiarFont(null, 30, Color.GREEN);
-				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
+			
+			
+//			if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
+//					if (gondolf.getHechizoSeleccionado().equals("fuego")) {
+//				      gondolf.lanzarFuego();
+//				  } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
+//				      gondolf.lanzarAgua();
+//				  }
+//				}
+//				//ENERGIA
+//				entorno.cambiarFont(null, 30, Color.RED);
+//				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
+//
+//				//VIDA DEL MAGO
+//				entorno.cambiarFont(null, 30, Color.GREEN);
+//				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
 
 			
 				
