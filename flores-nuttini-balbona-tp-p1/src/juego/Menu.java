@@ -62,15 +62,15 @@ public class Menu {
     }
 
     // Método para detectar si se hizo clic en un botón
-    public void detectarClick(int mouseX, int mouseY, Mago mago) {
+    public boolean detectarClick(int mouseX, int mouseY) {
         if (mouseX >= botonFuegoX && mouseX <= botonFuegoX + botonFuegoAncho &&
             mouseY >= botonFuegoY && mouseY <= botonFuegoY + botonFuegoAlto) {
-            mago.seleccionarFuego();
+            return true;
         }
 
         if (mouseX >= botonAguaX && mouseX <= botonAguaX + botonAguaAncho &&
             mouseY >= botonAguaY && mouseY <= botonAguaY + botonAguaAlto) {
-            mago.seleccionarAgua();
-        }
+        	return false;
+        }return false;
     }
 }

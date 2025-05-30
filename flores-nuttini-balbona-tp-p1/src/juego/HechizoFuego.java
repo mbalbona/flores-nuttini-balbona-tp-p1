@@ -29,11 +29,11 @@ package juego;
 				double y = destinoY - this.y;
 				double distancia = Math.sqrt(x * x + y * y);
 				
-				double direccionX = x / distancia;	
-				double direccionY = y / distancia;		
+				double distanciaX = x / distancia;	
+				double distanciaY = y / distancia;		
 				
-				this.x += direccionX * 5;
-				this.y += direccionY * 5;
+				this.x += distanciaX * 5;
+				this.y += distanciaY * 5;
 				
 				
 				e.dibujarImagen(fuego, this.x, this.y, 0);

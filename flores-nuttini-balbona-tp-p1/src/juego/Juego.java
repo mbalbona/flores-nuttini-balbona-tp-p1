@@ -17,6 +17,7 @@ public class Juego extends InterfaceJuego
 	private int cantMurcielagosMatados = 0;
 	private int contadorMurcielagos = 0;
 	private Point posMouse = new Point(0,0);
+	private boolean eligeHechizo = false;
 	
 	//PERSONAJES - COSAS
 	private Mago gondolf;
@@ -29,6 +30,7 @@ public class Juego extends InterfaceJuego
 	private Image imagenVictoria;
 	private Oleada gestionadorOleadas;
 	private HechizoFuego hechizoFuego;
+	private HechizoAgua hechizoAgua;
 	
 	//IMAGENES - SONIDOS
 	private Clip game_music;
@@ -68,6 +70,7 @@ public class Juego extends InterfaceJuego
 		this.random = new Random();
 		this.menu = new Menu();
 		this.hechizoFuego = new HechizoFuego(gondolf.getX(), gondolf.getY(), posMouse);
+		this.hechizoAgua = new HechizoAgua(gondolf.getX(), gondolf.getY(), posMouse);
 		this.imagenMenu = Herramientas.cargarImagen("imagenes/juego-menu.png");
 		this.imagenVictoria = Herramientas.cargarImagen("imagenes/victoria.png");
 		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
@@ -184,35 +187,46 @@ public class Juego extends InterfaceJuego
 			  }
 			}
 	
-			if (entorno.mousePresente() && entorno.sePresionoBoton(1)) {
-			    menu.detectarClick(entorno.mouseX(), entorno.mouseY(), gondolf);
+			if (entorno.mousePresente() && entorno.sePresionoBoton(1) && entorno.mouseX() >= 600) {
+			    eligeHechizo = menu.detectarClick(entorno.mouseX(), entorno.mouseY());
 			}
 			
-			if(entorno.estaPresionado(entorno.BOTON_IZQUIERDO) || entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+			if(entorno.estaPresionado(entorno.BOTON_IZQUIERDO) && eligeHechizo == true) {
+				//Uso se presionó para que se tomen las coordenadas en el momento que se manda el hechizo
 				if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
 					posMouse.x = entorno.mouseX();
 					posMouse.y = entorno.mouseY();
 					hechizoFuego.setX(gondolf.getX());
 					hechizoFuego.setY(gondolf.getY());
-				}	
-				hechizoFuego.avanzar(entorno, posMouse.x, posMouse.y);	
+				}
+				//Ya no lanza el hechizo cuando se selecciona en el menú
+				if (entorno.mouseX() <= 600) {
+					hechizoFuego.avanzar(entorno, posMouse.x, posMouse.y);	
+				}
 				}
 			
+			if(entorno.estaPresionado(entorno.BOTON_IZQUIERDO) && eligeHechizo == false) {
+				//Uso se presionó para que se tomen las coordenadas en el momento que se manda el hechizo
+				if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+					posMouse.x = entorno.mouseX();
+					posMouse.y = entorno.mouseY();
+					hechizoAgua.setX(gondolf.getX());
+					hechizoAgua.setY(gondolf.getY());
+				}	
+				//Ya no lanza el hechizo cuando se selecciona en el menú
+				if (entorno.mouseX() <= 600) {
+					hechizoAgua.avanzar(entorno, posMouse.x, posMouse.y);	
+				}
+				}
 			
-//			if (entorno.estaPresionado(entorno.BOTON_IZQUIERDO)) {
-//					if (gondolf.getHechizoSeleccionado().equals("fuego")) {
-//				      gondolf.lanzarFuego();
-//				  } else if (gondolf.getHechizoSeleccionado().equals("agua")) {
-//				      gondolf.lanzarAgua();
-//				  }
-//				}
-//				//ENERGIA
-//				entorno.cambiarFont(null, 30, Color.RED);
-//				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
-//
-//				//VIDA DEL MAGO
-//				entorno.cambiarFont(null, 30, Color.GREEN);
-//				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
+
+				//ENERGIA
+				entorno.cambiarFont(null, 30, Color.RED);
+				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
+
+				//VIDA DEL MAGO
+				entorno.cambiarFont(null, 30, Color.GREEN);
+				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
 
 			
 				
@@ -346,8 +360,8 @@ public class Juego extends InterfaceJuego
 	}
 
 	private boolean magoAguaColisionaCon(Murcielago m) {
-	    return gondolf.estaAguaActivo() &&
-	           distancia(m.getX(), m.getY(), gondolf.getAguaX(), gondolf.getAguaY()) < 30;
+	    return hechizoAgua.activo &&
+	           distancia(m.getX(), m.getY(), hechizoAgua.getX(), hechizoAgua.getY()) < 30;
 	}
 
 	private double distancia(int x1, int y1, int x2, int y2) {
