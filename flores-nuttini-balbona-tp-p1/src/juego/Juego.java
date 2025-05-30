@@ -293,7 +293,11 @@ public class Juego extends InterfaceJuego
 		    return;
 		}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		else if (this.cantMurcielagosMatados == 50) {
+=======
+		else if (this.cantMurcielagosMatados == 10) {
+>>>>>>> Stashed changes
 =======
 		else if (this.cantMurcielagosMatados == 10) {
 >>>>>>> Stashed changes
