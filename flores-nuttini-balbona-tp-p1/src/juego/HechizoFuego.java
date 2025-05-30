@@ -8,37 +8,50 @@ package juego;
 	public class HechizoFuego {
 		private int x;
 		private int y;
-		private Point destino;
 		private Image fuego;
 		boolean activo;
-		
-		public HechizoFuego(int x, int y, Point destino) {
-			this.x = x;
-			this.y = y;
-			this.destino = new Point();
-			this.activo = true;
+		private double dx, dy;
+	    private int velocidad = 8;
+
+	    public HechizoFuego(int x, int y, Point objetivo) {
+	        this.x = x;
+	        this.y = y;	       
+			this.activo = false;
 			this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");
-		}
 		
+	    }
 
 
 		
-		public void avanzar(Entorno e, int destinoX, int destinoY) {
-			if (this.x != destinoX && this.y != destinoY) {
-				double x = destinoX - this.x;
-				double y = destinoY - this.y;
-				double distancia = Math.sqrt(x * x + y * y);
-				
-				double distanciaX = x / distancia;	
-				double distanciaY = y / distancia;		
-				
-				this.x += distanciaX * 5;
-				this.y += distanciaY * 5;
-				
-				
-				e.dibujarImagen(fuego, this.x, this.y, 0);
-		        }
+	    public void lanzar(int origenX, int origenY, int destinoX, int destinoY) {
+	        this.x = origenX;
+	        this.y = origenY;
+
+	        double distancia = Math.sqrt(Math.pow(destinoX - origenX, 2) + Math.pow(destinoY - origenY, 2));
+	        this.dx = velocidad * (destinoX - origenX) / distancia;
+	        this.dy = velocidad * (destinoY - origenY) / distancia;
+
+	        this.activo = true;
+	    }
+		public void dibujar(Entorno e) {
+		    if (activo) {
+		        e.dibujarImagen(this.fuego, this.x, this.y, 0);
+		    }
 		}
+
+		public void avanzar() {
+	        if (!activo) return;
+
+	        this.x += dx;
+	        this.y += dy;
+
+	        // Área jugable: ancho < 600, alto entre 0 y 600
+	        if (x < 0 || x > 600 || y < 0 || y > 600) {
+	            this.activo = false;
+	        }
+	    }
+
+		
 		
 			
 		public int getX() {
