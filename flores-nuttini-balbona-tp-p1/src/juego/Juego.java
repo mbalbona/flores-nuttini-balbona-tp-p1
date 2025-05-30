@@ -341,8 +341,8 @@ public class Juego extends InterfaceJuego
 	//////////////////////////METODOS MAGO ELIMINA MURCIELAGOS//////////////////////////////
 	
 	private boolean magoFuegoColisionaCon(Murcielago m) {
-	    return gondolf.estaFuegoActivo() &&
-	           distancia(m.getX(), m.getY(), gondolf.getFuegoX(), gondolf.getFuegoY()) < 30;
+	    return hechizoFuego.activo &&
+	           distancia(m.getX(), m.getY(), hechizoFuego.getX(), hechizoFuego.getY()) < 30;
 	}
 
 	private boolean magoAguaColisionaCon(Murcielago m) {
