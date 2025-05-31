@@ -18,6 +18,8 @@ public class Juego extends InterfaceJuego
 	private int contadorMurcielagos = 0;
 	private Point posMouse = new Point(0,0);
 	private boolean eligeHechizo = false;
+	private int energiaMagica = 100;
+	private int vidaMago = 100;
 	
 	//PERSONAJES - COSAS
 	private Mago gondolf;
@@ -201,13 +203,13 @@ public class Juego extends InterfaceJuego
 			        eligeHechizo = menu.detectarClick(posMouse.x, posMouse.y);
 			    } else {
 			        if (eligeHechizo) {
-			            hechizoFuego.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);			            
+			            hechizoFuego.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);
 			        } else {
 			            hechizoAgua.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);
 			        }
 			    }
 			}
-			
+			//encuadra el hechizo seleccionado
 			if (eligeHechizo==false) {
 				menu.dibRecAgua(entorno);
 			}else {
@@ -215,25 +217,32 @@ public class Juego extends InterfaceJuego
 			}
 			
 			hechizoFuego.avanzar();
+			if (eligeHechizo == true && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
+				energiaMagica -= hechizoFuego.costoFuego();
+			}
 			hechizoFuego.dibujar(entorno);
 
 			hechizoAgua.avanzar();
+			if (eligeHechizo == false && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
+				energiaMagica -= hechizoAgua.costoAgua();
+			}
 			hechizoAgua.dibujar(entorno);
 			if(hechizoAgua.getX() == posMouse.x && hechizoAgua.getY() == posMouse.y) {
 				hechizoAgua.cambiarEstado();
 			}
 
-			
-			
+			if(hechizoFuego.estadoExplotar == true) {
+				hechizoFuego.dibujarExplosion(entorno);
+			}hechizoFuego.setEstadoExplotar(false);
 			
 
 				//ENERGIA
 				entorno.cambiarFont(null, 30, Color.RED);
-				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
+				entorno.escribirTexto("Energía: " + energiaMagica, 615, 585);
 
 				//VIDA DEL MAGO
 				entorno.cambiarFont(null, 30, Color.GREEN);
-				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
+				entorno.escribirTexto("Vida: " + vidaMago, 635, 550);
 
 			
 				
@@ -274,7 +283,7 @@ public class Juego extends InterfaceJuego
 
 		        if (distanciaActual <= margenDistancia) {
 		            this.murcielagos[i] = null;
-		            this.gondolf.quitarVida(m.getDaño());
+		            vidaMago -= m.getDaño();
 		            this.gestionadorOleadas.mobDerrotado();
 		        } else {
 		            m.dibujar(entorno);
@@ -395,6 +404,7 @@ public class Juego extends InterfaceJuego
 	        if (murcielago != null && murcielago.getEstaVivo()) {
 	            if (magoFuegoColisionaCon(murcielago)) {
 	                murcielagos[i] = null; // lo eliminás del arreglo
+	                hechizoFuego.cambiarEstadoExplotar();
 	                hechizoFuego.cambiarEstado();
 	                cantMurcielagosMatados++;
 	            } else if (magoAguaColisionaCon(murcielago)) {

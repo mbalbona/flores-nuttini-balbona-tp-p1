@@ -9,16 +9,21 @@ package juego;
 		private int x;
 		private int y;
 		private Image fuego;
+		private Image fuegoExplosion;
 		boolean activo;
+		boolean estadoExplotar;
 		private double dx, dy;
-	    private int velocidad = 8;
+	    private int velocidad = 5;
+	    private int costoFuego;
 
 	    public HechizoFuego(int x, int y, Point objetivo) {
 	        this.x = x;
 	        this.y = y;	       
 			this.activo = false;
-			this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");
-		
+			this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");	
+			this.fuegoExplosion = Herramientas.cargarImagen("imagenes/fuego-explosion.gif");
+			this.estadoExplotar = false;
+			this.costoFuego = 5;
 	    }
 
 
@@ -37,6 +42,26 @@ package juego;
 		    if (activo) {
 		        e.dibujarImagen(this.fuego, this.x, this.y, 0);
 		    }
+		}		
+		
+		public void dibujarExplosion(Entorno e) {
+			e.dibujarImagen(this.fuegoExplosion, 100, 100, 0, 1);
+		}
+		
+		public boolean isEstadoExplotar() {
+			return estadoExplotar;
+		}
+
+
+
+		public void setEstadoExplotar(boolean estadoExplotar) {
+			this.estadoExplotar = estadoExplotar;
+		}
+
+
+
+		public void cambiarEstadoExplotar() {
+			estadoExplotar = true;
 		}
 
 		public void avanzar() {
@@ -79,8 +104,9 @@ package juego;
 		public void setFuego(Image fuego) {
 			this.fuego = fuego;
 		}
-
-		
+		public int costoFuego() {
+			return costoFuego;
+		}
 	}
 
 

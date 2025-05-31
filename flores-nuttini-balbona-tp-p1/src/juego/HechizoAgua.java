@@ -8,17 +8,18 @@ package juego;
 	public class HechizoAgua {
 		private int x;
 		private int y;
-		private Image fuego;
+		private Image agua;
 		boolean activo;
 		private double dx, dy;
-	    private int velocidad = 8;
+	    private int velocidad = 5;
+	    private int costoAgua;
 
 	    public HechizoAgua(int x, int y, Point objetivo) {
 	        this.x = x;
 	        this.y = y;	       
 			this.activo = false;
-			this.fuego = Herramientas.cargarImagen("imagenes/hechizo-agua.png");
-		
+			this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.png");
+			this.costoAgua = 0;		
 	    }
 
 
@@ -35,7 +36,7 @@ package juego;
 	    }
 		public void dibujar(Entorno e) {
 		    if (activo) {
-		        e.dibujarImagen(this.fuego, this.x, this.y, 0,0.5);
+		        e.dibujarImagen(this.agua, this.x, this.y, 0,0.5);
 		    }
 		}
 
@@ -72,14 +73,16 @@ package juego;
 			this.y = y;
 		}
 
-		public Image getFuego() {
-			return fuego;
+		public Image getAgua() {
+			return agua;
 		}
 
-		public void setFuego(Image fuego) {
-			this.fuego = fuego;
+		public void setAgua(Image fuego) {
+			this.agua = agua;
 		}
-
+		public int costoAgua() {
+			return costoAgua;
+		}
 		
 	}
 
