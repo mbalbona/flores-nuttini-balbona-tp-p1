@@ -51,7 +51,9 @@ package juego;
 	        }
 	    }
 
-		
+		public void cambiarEstado() {
+			this.activo = false;
+		}
 		
 			
 		public int getX() {

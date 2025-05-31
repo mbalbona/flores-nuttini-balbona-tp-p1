@@ -23,10 +23,10 @@ public class Menu {
         this.alto = menu.getHeight(null);
 
         // Botón de FUEGO
-        this.botonFuegoAncho = 100;
-        this.botonFuegoAlto = 100;
-        this.botonFuegoX = x - 40;
-        this.botonFuegoY = y + 90;
+        this.botonFuegoAncho = 150;
+        this.botonFuegoAlto = 150;
+        this.botonFuegoX = x - 70;
+        this.botonFuegoY = y + 70;
 
         // Botón de AGUA
         this.botonAguaAncho = 100;
@@ -48,7 +48,7 @@ public class Menu {
     }
 
     public void dibujar(Entorno e) {
-         // Dibujar botón de fuego
+         // Dibujar botón de fuego   	
         e.dibujarRectangulo(botonFuegoX + botonFuegoAncho / 2, botonFuegoY + botonFuegoAlto 
         		/ 2, botonFuegoAncho, botonFuegoAlto, 0,Color.red);
         e.escribirTexto("Fuego", botonFuegoX + 10, botonFuegoY + 25);
@@ -57,8 +57,22 @@ public class Menu {
         e.dibujarRectangulo(botonAguaX + botonAguaAncho / 2, botonAguaY + botonAguaAlto 
         		/ 2, botonAguaAncho, botonAguaAlto, 0, Color.BLUE);
         e.escribirTexto("Agua", botonAguaX + 15, botonAguaY + 25);
-        
-        e.dibujarImagen(this.menu, x, y, 0);
+        e.dibujarImagen(this.menu, x, y, 0);        
+    }
+    
+    public void dibRecAgua(Entorno e) {
+    	e.dibujarRectangulo(botonFuegoX+69, botonFuegoY-25, 165, 5, 0, Color.BLUE);
+    	e.dibujarRectangulo(botonFuegoX+69, botonFuegoY-185, 165, 5, 0, Color.BLUE);
+    	e.dibujarRectangulo(botonFuegoX+150, botonFuegoY-105, 5, 160, 0, Color.BLUE);
+    	e.dibujarRectangulo(botonFuegoX-12, botonFuegoY-105, 5, 160, 0, Color.BLUE);
+    	
+    }
+    public void dibRecFuego(Entorno e) {
+    	e.dibujarRectangulo(botonFuegoX+69, botonFuegoY-10, 165, 5, 0, Color.red);
+    	e.dibujarRectangulo(botonFuegoX+69, botonFuegoY+140, 165, 5, 0, Color.red);
+    	e.dibujarRectangulo(botonFuegoX+150, botonFuegoY+65, 5, 152, 0, Color.red);
+    	e.dibujarRectangulo(botonFuegoX-12, botonFuegoY+65, 5, 152, 0, Color.red);
+    	
     }
 
     // Método para detectar si se hizo clic en un botón

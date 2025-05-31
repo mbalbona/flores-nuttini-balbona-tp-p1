@@ -55,7 +55,6 @@ public class Juego extends InterfaceJuego
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
 	private int margenAparicion = 50;
-
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -75,8 +74,8 @@ public class Juego extends InterfaceJuego
 		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
 		this.imagenGameOver = Herramientas.cargarImagen("imagenes/game-over.png");
 		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
-		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
-		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+//		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
+//		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		
 		///MOBS
 		this.murcielagos = new Murcielago[cantMurcielagosTotales];	
@@ -202,19 +201,27 @@ public class Juego extends InterfaceJuego
 			        eligeHechizo = menu.detectarClick(posMouse.x, posMouse.y);
 			    } else {
 			        if (eligeHechizo) {
-			            hechizoFuego.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);
+			            hechizoFuego.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);			            
 			        } else {
 			            hechizoAgua.lanzar(gondolf.getX(), gondolf.getY(), posMouse.x, posMouse.y);
 			        }
 			    }
 			}
-
+			
+			if (eligeHechizo==false) {
+				menu.dibRecAgua(entorno);
+			}else {
+				menu.dibRecFuego(entorno);
+			}
 			
 			hechizoFuego.avanzar();
 			hechizoFuego.dibujar(entorno);
 
 			hechizoAgua.avanzar();
 			hechizoAgua.dibujar(entorno);
+			if(hechizoAgua.getX() == posMouse.x && hechizoAgua.getY() == posMouse.y) {
+				hechizoAgua.cambiarEstado();
+			}
 
 			
 			
@@ -250,7 +257,7 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////////////
-		
+
 		chequearColisionesConHechizos(); //LLAMAMOS AL METODO PARA ELIMINAR MURCIELAGOS ANTES DE DIBUJAR
 
 		
@@ -364,6 +371,8 @@ public class Juego extends InterfaceJuego
 		return aux;
 	}
 	
+	
+	
 	//////////////////////////METODOS MAGO ELIMINA MURCIELAGOS//////////////////////////////
 	
 	private boolean magoFuegoColisionaCon(Murcielago m) {
@@ -386,11 +395,11 @@ public class Juego extends InterfaceJuego
 	        if (murcielago != null && murcielago.getEstaVivo()) {
 	            if (magoFuegoColisionaCon(murcielago)) {
 	                murcielagos[i] = null; // lo eliminás del arreglo
-	                gondolf.desactivarFuego();
+	                hechizoFuego.cambiarEstado();
 	                cantMurcielagosMatados++;
 	            } else if (magoAguaColisionaCon(murcielago)) {
 	                murcielagos[i] = null; 
-	                gondolf.desactivarAgua();
+	                hechizoAgua.cambiarEstado();
 	                cantMurcielagosMatados++;
 	            }
 	        }
