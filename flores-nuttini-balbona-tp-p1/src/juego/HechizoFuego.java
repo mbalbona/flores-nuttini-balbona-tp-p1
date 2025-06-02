@@ -44,8 +44,14 @@ package juego;
 		    }
 		}		
 		
-		public void dibujarExplosion(Entorno e) {
-			e.dibujarImagen(this.fuegoExplosion, 100, 100, 0, 1);
+		public void dibujarExplosion(Entorno e, Point punto) {
+			if (estadoExplotar == true) {
+				e.dibujarImagen(this.fuegoExplosion, punto.x, punto.y, 0, 1);
+			}
+		}
+		
+		public void restauraExplosion() {
+			this.fuegoExplosion = Herramientas.cargarImagen("imagenes/fuego-explosion.gif");
 		}
 		
 		public boolean isEstadoExplotar() {
@@ -100,6 +106,18 @@ package juego;
 		public Image getFuego() {
 			return fuego;
 		}
+
+		public Image getFuegoExplosion() {
+			return fuegoExplosion;
+		}
+
+
+
+		public void setFuegoExplosion(Image fuegoExplosion) {
+			this.fuegoExplosion = fuegoExplosion;
+		}
+
+
 
 		public void setFuego(Image fuego) {
 			this.fuego = fuego;
