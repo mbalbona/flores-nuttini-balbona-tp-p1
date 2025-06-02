@@ -20,7 +20,8 @@ public class Juego extends InterfaceJuego
 	private boolean eligeHechizo = false;
 	private int energiaMagica = 100;
 	private int vidaMago = 100;
-	private double contador = 0;
+	private double contadorFuego = 0;
+	private double contadorAgua = 0;
 	private Point puntoColision = new Point(0,0);
 	
 	//PERSONAJES - COSAS
@@ -233,13 +234,20 @@ public class Juego extends InterfaceJuego
 				hechizoAgua.cambiarEstado();
 			}
 
-			if(hechizoFuego.estadoExplotar == true && contador <= 67.00) {
+			if(hechizoFuego.estadoExplotar == true && contadorFuego <= 66.00) {
 				hechizoFuego.dibujarExplosion(entorno, puntoColision);
-				contador++;
+				contadorFuego++;
 			}else{
 				hechizoFuego.setEstadoExplotar(false);
-				contador = 0;
-				hechizoFuego.restauraExplosion();
+				contadorFuego = 0;
+			}
+			
+			if(hechizoAgua.estadoExplotar == true && contadorAgua <= 20.00) {
+				hechizoAgua.dibujarExplosion(entorno, puntoColision);
+				contadorAgua++;
+			}else{
+				hechizoAgua.setEstadoExplotar(false);
+				contadorAgua = 0;
 			}
 
 				//ENERGIA
@@ -412,11 +420,14 @@ public class Juego extends InterfaceJuego
 	            	puntoColision.x = murcielagos[i].getX();
 	            	puntoColision.y = murcielagos[i].getY();
 	                murcielagos[i] = null; // lo eliminás del arreglo
-	                hechizoFuego.cambiarEstadoExplotar();
-	                hechizoFuego.cambiarEstado();
 	                cantMurcielagosMatados++;
+	               	hechizoFuego.cambiarEstadoExplotar();
+		            hechizoFuego.cambiarEstado();
 	            } else if (magoAguaColisionaCon(murcielago)) {
+	            	puntoColision.x = murcielagos[i].getX();
+	            	puntoColision.y = murcielagos[i].getY();
 	                murcielagos[i] = null; 
+	                hechizoAgua.cambiarEstadoExplotar();
 	                hechizoAgua.cambiarEstado();
 	                cantMurcielagosMatados++;
 	            }

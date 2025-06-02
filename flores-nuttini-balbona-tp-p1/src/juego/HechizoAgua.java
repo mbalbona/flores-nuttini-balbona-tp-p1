@@ -9,17 +9,22 @@ package juego;
 		private int x;
 		private int y;
 		private Image agua;
+		private Image aguaExplosion;
 		boolean activo;
+		boolean estadoExplotar;
 		private double dx, dy;
 	    private int velocidad = 5;
 	    private int costoAgua;
+	    
 
 	    public HechizoAgua(int x, int y, Point objetivo) {
 	        this.x = x;
 	        this.y = y;	       
 			this.activo = false;
-			this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.png");
+			this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.gif");
+			this.aguaExplosion = Herramientas.cargarImagen("imagenes/agua-explosion.gif");
 			this.costoAgua = 0;		
+			this.estadoExplotar = false;
 	    }
 
 
@@ -39,6 +44,12 @@ package juego;
 		        e.dibujarImagen(this.agua, this.x, this.y, 0,0.5);
 		    }
 		}
+		
+		public void dibujarExplosion(Entorno e, Point punto) {
+			if (estadoExplotar == true) {
+				e.dibujarImagen(this.aguaExplosion, punto.x, punto.y, 0, 0.5);
+			}
+		}
 
 		public void avanzar() {
 	        if (!activo) return;
@@ -51,7 +62,19 @@ package juego;
 	            this.activo = false;
 	        }
 	    }
+		
+		public boolean isEstadoExplotar() {
+			return estadoExplotar;
+		}
+		
+		public void setEstadoExplotar(boolean estadoExplotar) {
+			this.estadoExplotar = estadoExplotar;
+		}
 
+		public void cambiarEstadoExplotar() {
+			estadoExplotar = true;
+		}
+		
 		public void cambiarEstado() {
 			this.activo = false;
 		}

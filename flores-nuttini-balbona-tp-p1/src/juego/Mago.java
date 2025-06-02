@@ -59,7 +59,7 @@ public class Mago {
 	this.izq = Herramientas.cargarImagen("imagenes/mago-der.png");
 	this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
 	this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");
-	this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.png");
+	this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.gif");
 	}
 	
 	public void dibujar(Entorno e) {
