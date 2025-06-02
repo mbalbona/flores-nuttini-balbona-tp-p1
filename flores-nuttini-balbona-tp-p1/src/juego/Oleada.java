@@ -16,6 +16,12 @@ public class Oleada {
 	private int cantMurcielagosIniciales; 		///En la primera oleada apareceran N murcielagos
 	private int incrementoMurcielagosPorOleada; ///y cada oleada se iran incrementando
 	
+	private static int oleadaGanadora = 4;     ///Oleada que tiene que alcanzar el jugador para ganar
+	
+	private int dañoBaseMurcielago = 10;     ///Daño inicial en la primera oledada
+	private static int incrementoDañoPorOleada = 5; ///Cuanto aumenta el daño por oleada
+	private int dañoActualMurcielago;
+	
 	public Oleada(int tiempoDescansoEntreOleadas, int cantMurcielagosIniciales, int incrementoMurcielagos) {
 		this.tiempoDescansoEntreOleadas = tiempoDescansoEntreOleadas;
 		this.cantMurcielagosIniciales = cantMurcielagosIniciales;
@@ -23,6 +29,7 @@ public class Oleada {
 		this.numOleadaActual = 0;
 		this.estadoOleada = 0;
 		this.contadorDescanso = tiempoDescansoEntreOleadas;
+		this.dañoActualMurcielago = dañoBaseMurcielago;
 	}
 	
 	////////GETTERS Y SETTERS////////////
@@ -97,6 +104,13 @@ public class Oleada {
 	public void setIncrementoMurcielagosPorOleada(int incrementoMurcielagosPorOleada) {
 		this.incrementoMurcielagosPorOleada = incrementoMurcielagosPorOleada;
 	}
+	
+	public int getOleadaGanadora() {
+		return oleadaGanadora;
+	}
+	public int getDañoActualMurcielagos() {
+		return this.dañoActualMurcielago;
+	}
 
 	/////////////////////////////////////
 	
@@ -110,24 +124,25 @@ public class Oleada {
 		this.murcielagosGenerados = 0;
 		this.murcielagosDerrotados = 0;
 		
+		this.dañoActualMurcielago = this.dañoBaseMurcielago + (this.numOleadaActual - 1) * this.incrementoMurcielagosPorOleada; ///Aumenta el daño por oleada
 		this.estadoOleada = 1; ///Generando Mobs
 		
 	}
 	
 	public void actualizar(int mobsActivosEnPantalla) {
 		switch(this.estadoOleada) {
-			case 0:
+			case 0: ///Descanso entre oleadas
 				this.contadorDescanso--;
 				if(this.contadorDescanso <= 0) {
 					iniciarOleada();
 				}
 				break;
-			case 1:
+			case 1: ///Genera Mobs hasta que la cantidad Maxima sea alcanzada
 				if(this.murcielagosGenerados >= this.murcielagosEnEstaOleada) {
-					this.estadoOleada = 2; ///Esperando a que los mobs sean derrotados
+					this.estadoOleada = 2; 
 				}
 				break;
-			case 2:
+			case 2: ///Esperando a que los mobs sean derrotados
 				if(mobsActivosEnPantalla == 0) {
 					this.estadoOleada = 0;
 					this.contadorDescanso = this.tiempoDescansoEntreOleadas;
@@ -148,5 +163,7 @@ public class Oleada {
 	public void mobDerrotado() {
 		this.murcielagosDerrotados++;
 	}
+	
+	
 	
 }

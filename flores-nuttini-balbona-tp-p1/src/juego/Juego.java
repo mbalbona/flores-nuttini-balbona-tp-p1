@@ -14,8 +14,6 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
-	private int cantMurcielagosMatados = 0;
-	private int contadorMurcielagos = 0;
 	private Point posMouse = new Point(0,0);
 	private boolean eligeHechizo = false;
 	private int energiaMagica = 100;
@@ -50,9 +48,10 @@ public class Juego extends InterfaceJuego
 
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
+	private int cantMurcielagosMatados = 0;
 	private static int cantMurcielagosTotales = 50;
 	private static int maxMurcielagosPantalla = 10;
-	private int intervaloAparicion = 100;
+	private int intervaloAparicion = 20;
 	private int contadorAparicion = 0;
 	
 	///DIMENSIONES DE LA VENTANA DE JUEGO
@@ -265,18 +264,25 @@ public class Juego extends InterfaceJuego
 		////////////////////////////GESTION DE OLEADAS///////////////////////////////////////
 		int mobsActivos = cantMobsActivos();
 		this.gestionadorOleadas.actualizar(mobsActivos);
+	
 		
 		if(this.gestionadorOleadas.necesitaGenerarEnemigo()) {
 			this.contadorAparicion++;
 			if(this.contadorAparicion >= this.intervaloAparicion) {
 				if(cantMobsActivos() < maxMurcielagosPantalla) {
 					añadirMurcielagoEnPosicionAleatoria();
+					for(int i = 0; i < this.cantMurcielagosTotales; i++) {
+						if(this.murcielagos[i] != null && this.murcielagos[i].getDaño() == 10) {
+							this.murcielagos[i].setDaño(this.gestionadorOleadas.getDañoActualMurcielagos());
+							System.out.println("Daño:" + this.murcielagos[i].getDaño());
+						}
+					}
 					this.gestionadorOleadas.mobGenerado();
 					System.out.println("Mobs Activos:" + cantMobsActivos());
 				}else {
 					System.out.println("Maxima cantidad de mobs en pantalla alcanzado:" + maxMurcielagosPantalla);
 				}
-				this.contadorAparicion = 0;
+				this.contadorAparicion = 0; ///VUELVE EL CONTADOR A CERO PARA QUE SE CUMPLA EL INTERVALO DE APARICION
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -289,12 +295,15 @@ public class Juego extends InterfaceJuego
 		    Murcielago m = this.murcielagos[i];
 		    if (m != null) {
 		        m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
+		        
+		      
+				//////////////////////LOGICA DAÑO AL MAGO CUANDO LOS ENEMIGOS CHOCAN CON EL///////////////////////
 
 		        int margenDistancia = (int)m.getVelocidad();
 		        double auxX = this.gondolf.getX() - m.getX();
 		        double auxY = this.gondolf.getY() - m.getY();
 		        double distanciaActual = Math.sqrt(auxX * auxX + auxY * auxY);
-
+		        
 		        if (distanciaActual <= margenDistancia) {
 		            this.murcielagos[i] = null;
 		            vidaMago -= m.getDaño();
@@ -302,6 +311,8 @@ public class Juego extends InterfaceJuego
 		        } else {
 		            m.dibujar(entorno);
 		        }
+				////////////////////////////////////////////////////////////////////////////////
+
 		    }
 		}
 		////////////////////////////////////////////////////////////////////////////////
@@ -309,7 +320,7 @@ public class Juego extends InterfaceJuego
 
 		//////////////////////TEXTOS RELACIONADOS CON MOBS///////////////////////
 		entorno.cambiarFont("consola", 20, Color.WHITE);
-		entorno.escribirTexto(this.cantMurcielagosMatados + "/" + cantMurcielagosTotales, 525, 20);
+		entorno.escribirTexto("Cant. Matados:" + this.cantMurcielagosMatados, 400, 20);
 		
 		entorno.cambiarFont("consola", 20, Color.WHITE);
 		entorno.escribirTexto("Cant Mobs Oleada:" + this.gestionadorOleadas.getmurcielagosEnEstaOleada(), 400, 40);
@@ -334,7 +345,7 @@ public class Juego extends InterfaceJuego
 //		}
 		
 
-		if (this.cantMurcielagosMatados >= cantMurcielagosTotales) {
+		if (this.gestionadorOleadas.getNumOleadaActual()-1 == this.gestionadorOleadas.getOleadaGanadora()) {
 			juegoGanado = true;
 			return;
 	}
@@ -434,12 +445,6 @@ public class Juego extends InterfaceJuego
 	        }
 	    }
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
-	
 	
 
 	@SuppressWarnings("unused")

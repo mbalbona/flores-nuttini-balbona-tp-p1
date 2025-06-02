@@ -81,8 +81,8 @@ public class Murcielago {
 		return daño;
 	}
 
-	public void setDaño(int daño) {
-		this.daño = daño;
+	public void setDaño(int d) {
+		this.daño = d;
 	}
 
 	//////////////////////// DIBUJAR MURCIELAGO ///////////////////////
