@@ -14,10 +14,11 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private boolean espacioPresionado = false;
 	private boolean enterPresionado = false;
-	private int cantMurcielagosMatados = 0;
-	private int contadorMurcielagos = 0;
 	private Point posMouse = new Point(0,0);
 	private boolean eligeHechizo = false;
+	private double contadorFuego = 0;
+	private double contadorAgua = 0;
+	private Point puntoColision = new Point(0,0);
 	
 	//PERSONAJES - COSAS
 	private Mago gondolf;
@@ -45,9 +46,10 @@ public class Juego extends InterfaceJuego
 
 	///VARIABLES QUE CONTROLAN LA APARICION DE MOBS
 	private Random random;
+	private int cantMurcielagosMatados = 0;
 	private static int cantMurcielagosTotales = 50;
 	private static int maxMurcielagosPantalla = 10;
-	private int intervaloAparicion = 100;
+	private int intervaloAparicion = 20;
 	private int contadorAparicion = 0;
 	
 	///DIMENSIONES DE LA VENTANA DE JUEGO
@@ -55,7 +57,9 @@ public class Juego extends InterfaceJuego
 	private int altoPantalla = 600;
 	private int margenPantalla = 50;
 	private int margenAparicion = 50;
-
+	
+	private int vidaMago;
+	private int energiaMago;
 	
 	///CONSTRUCTOR
 	public Juego(){
@@ -75,8 +79,11 @@ public class Juego extends InterfaceJuego
 		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
 		this.imagenGameOver = Herramientas.cargarImagen("imagenes/game-over.png");
 		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
-		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
-		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+//		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
+//		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+		vidaMago = gondolf.getVida();
+		energiaMago = gondolf.getEnergiaMagica();
+
 		
 		///MOBS
 		this.murcielagos = new Murcielago[cantMurcielagosTotales];	
@@ -152,8 +159,6 @@ public class Juego extends InterfaceJuego
 		this.rocas.dibujar(entorno);
 		this.menu.dibujar(entorno);
 		this.gondolf.dibujar(entorno);
-		this.gondolf.variosFuegos(entorno);
-		this.gondolf.variasAguas(entorno);
 		
 		///////////////////GONDOLF, MOVERSE, LANZAR HECHIZOS///////////////////// 
 	
@@ -208,25 +213,53 @@ public class Juego extends InterfaceJuego
 			        }
 			    }
 			}
-
+			//encuadra el hechizo seleccionado
+			if (eligeHechizo==false) {
+				menu.dibRecAgua(entorno);
+			}else {
+				menu.dibRecFuego(entorno);
+			}
 			
 			hechizoFuego.avanzar();
+			if (eligeHechizo == true && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
+				energiaMago -= hechizoFuego.costoFuego();
+			}
 			hechizoFuego.dibujar(entorno);
 
 			hechizoAgua.avanzar();
+			if (eligeHechizo == false && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
+				energiaMago -= hechizoAgua.costoAgua();
+			}
 			hechizoAgua.dibujar(entorno);
+			if(hechizoAgua.getX() == posMouse.x && hechizoAgua.getY() == posMouse.y) {
+				hechizoAgua.cambiarEstado();
+			}
 
+			if(hechizoFuego.estadoExplotar == true && contadorFuego <= 66.00) {
+				//hechizoFuego.dibujarAreaExplosion(entorno, puntoColision);
+				hechizoFuego.dibujarExplosion(entorno, puntoColision);				
+				contadorFuego++;
+			}else{
+				hechizoFuego.setEstadoExplotar(false);
+				contadorFuego = 0;
+			}
 			
-			
-			
+			if(hechizoAgua.estadoExplotar == true && contadorAgua <= 20.00) {
+				//hechizoAgua.dibujarAreaExplosion(entorno, puntoColision);
+				hechizoAgua.dibujarExplosion(entorno, puntoColision);				
+				contadorAgua++;
+			}else{
+				hechizoAgua.setEstadoExplotar(false);
+				contadorAgua = 0;
+			}
 
 				//ENERGIA
 				entorno.cambiarFont(null, 30, Color.RED);
-				entorno.escribirTexto("Energía: " + gondolf.getEnergiaMagica(), 615, 585);
+				entorno.escribirTexto("Energía: " + energiaMago, 615, 585);
 
 				//VIDA DEL MAGO
 				entorno.cambiarFont(null, 30, Color.GREEN);
-				entorno.escribirTexto("Vida: " + gondolf.getVida(), 635, 550);
+				entorno.escribirTexto("Vida: " + vidaMago, 635, 550);
 
 			
 				
@@ -235,43 +268,57 @@ public class Juego extends InterfaceJuego
 		////////////////////////////GESTION DE OLEADAS///////////////////////////////////////
 		int mobsActivos = cantMobsActivos();
 		this.gestionadorOleadas.actualizar(mobsActivos);
+	
 		
 		if(this.gestionadorOleadas.necesitaGenerarEnemigo()) {
 			this.contadorAparicion++;
 			if(this.contadorAparicion >= this.intervaloAparicion) {
 				if(cantMobsActivos() < maxMurcielagosPantalla) {
 					añadirMurcielagoEnPosicionAleatoria();
+					for(int i = 0; i < this.cantMurcielagosTotales; i++) {
+						if(this.murcielagos[i] != null && this.murcielagos[i].getDaño() == 10) {
+							this.murcielagos[i].setDaño(this.gestionadorOleadas.getDañoActualMurcielagos());
+							System.out.println("Daño:" + this.murcielagos[i].getDaño());
+						}
+					}
 					this.gestionadorOleadas.mobGenerado();
 					System.out.println("Mobs Activos:" + cantMobsActivos());
 				}else {
 					System.out.println("Maxima cantidad de mobs en pantalla alcanzado:" + maxMurcielagosPantalla);
 				}
-				this.contadorAparicion = 0;
+				this.contadorAparicion = 0; ///VUELVE EL CONTADOR A CERO PARA QUE SE CUMPLA EL INTERVALO DE APARICION
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////////////
-		
-		chequearColisionesConHechizos(); //LLAMAMOS AL METODO PARA ELIMINAR MURCIELAGOS ANTES DE DIBUJAR
 
+		chequearColisionesConHechizos(); //LLAMAMOS AL METODO PARA ELIMINAR MURCIELAGOS ANTES DE DIBUJAR
+		if (hechizoAgua.estadoExplotar == true || hechizoFuego.estadoExplotar == true) {
+			chequearColisionConExplosion();
+		}
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
 		for (int i = 0; i < cantMurcielagosTotales; i++) {
 		    Murcielago m = this.murcielagos[i];
 		    if (m != null) {
 		        m.moverHaciaJugador(this.gondolf.getX(), this.gondolf.getY());
+		        
+		      
+				//////////////////////LOGICA DAÑO AL MAGO CUANDO LOS ENEMIGOS CHOCAN CON EL///////////////////////
 
 		        int margenDistancia = (int)m.getVelocidad();
 		        double auxX = this.gondolf.getX() - m.getX();
 		        double auxY = this.gondolf.getY() - m.getY();
 		        double distanciaActual = Math.sqrt(auxX * auxX + auxY * auxY);
-
+		        
 		        if (distanciaActual <= margenDistancia) {
 		            this.murcielagos[i] = null;
-		            this.gondolf.quitarVida(m.getDaño());
+		            vidaMago -= m.getDaño();
 		            this.gestionadorOleadas.mobDerrotado();
 		        } else {
 		            m.dibujar(entorno);
 		        }
+				////////////////////////////////////////////////////////////////////////////////
+
 		    }
 		}
 		////////////////////////////////////////////////////////////////////////////////
@@ -279,7 +326,7 @@ public class Juego extends InterfaceJuego
 
 		//////////////////////TEXTOS RELACIONADOS CON MOBS///////////////////////
 		entorno.cambiarFont("consola", 20, Color.WHITE);
-		entorno.escribirTexto(this.cantMurcielagosMatados + "/" + cantMurcielagosTotales, 525, 20);
+		entorno.escribirTexto("Cant. Matados:" + this.cantMurcielagosMatados, 400, 20);
 		
 		entorno.cambiarFont("consola", 20, Color.WHITE);
 		entorno.escribirTexto("Cant Mobs Oleada:" + this.gestionadorOleadas.getmurcielagosEnEstaOleada(), 400, 40);
@@ -305,7 +352,7 @@ public class Juego extends InterfaceJuego
 //		}
 		
 
-		if (this.cantMurcielagosMatados >= cantMurcielagosTotales) {
+		if (this.gestionadorOleadas.getNumOleadaActual()-1 == this.gestionadorOleadas.getOleadaGanadora()) {
 			juegoGanado = true;
 			return;
 	}
@@ -370,6 +417,8 @@ public class Juego extends InterfaceJuego
 		return aux;
 	}
 	
+	
+	
 	//////////////////////////METODOS MAGO ELIMINA MURCIELAGOS//////////////////////////////
 	
 	private boolean magoFuegoColisionaCon(Murcielago m) {
@@ -391,23 +440,58 @@ public class Juego extends InterfaceJuego
 	        Murcielago murcielago = murcielagos[i];
 	        if (murcielago != null && murcielago.getEstaVivo()) {
 	            if (magoFuegoColisionaCon(murcielago)) {
+	            	puntoColision.x = murcielagos[i].getX();
+	            	puntoColision.y = murcielagos[i].getY();
 	                murcielagos[i] = null; // lo eliminás del arreglo
-	                gondolf.desactivarFuego();
 	                cantMurcielagosMatados++;
+	               	hechizoFuego.cambiarEstadoExplotar();
+		            hechizoFuego.cambiarEstado();
 	            } else if (magoAguaColisionaCon(murcielago)) {
+	            	puntoColision.x = murcielagos[i].getX();
+	            	puntoColision.y = murcielagos[i].getY();
 	                murcielagos[i] = null; 
-	                gondolf.desactivarAgua();
+	                hechizoAgua.cambiarEstadoExplotar();
+	                hechizoAgua.cambiarEstado();
 	                cantMurcielagosMatados++;
 	            }
 	        }
 	    }
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 	
+	private boolean colisionConExplosionFuego(Murcielago m) {
+		int dx = Math.abs(m.getX()-puntoColision.x);
+		int dy = Math.abs(m.getY()-puntoColision.y);
+		double radio = hechizoFuego.getDiametroExplosion()/2;
+		if(dx * dx + dy * dy < radio * radio) {
+			return true;
+		}
+		return false;
+	}
 	
+	private boolean colisionConExplosionAgua(Murcielago m) {
+		int dx = Math.abs(m.getX()-puntoColision.x);
+		int dy = Math.abs(m.getY()-puntoColision.y);
+		double radio = hechizoAgua.getDiametroExplosion()/2;
+		if(dx * dx + dy * dy < radio * radio) {
+			return true;
+		}
+		return false;
+	}
 	
-	
+	private void chequearColisionConExplosion() {
+		for (int i = 0; i < murcielagos.length; i++) {
+	        Murcielago murcielago = murcielagos[i];
+	        if (murcielago != null && murcielago.getEstaVivo()) {
+	            if (colisionConExplosionFuego(murcielago) == true) {
+	            	murcielagos[i] = null; // lo eliminás del arreglo
+	                cantMurcielagosMatados++;
+	            }else if (colisionConExplosionAgua(murcielago)) {
+		            	murcielagos[i] = null; // lo eliminás del arreglo
+		                cantMurcielagosMatados++;
+	            }
+	        }
+		}
+	}
 	
 
 	@SuppressWarnings("unused")

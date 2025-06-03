@@ -1,5 +1,6 @@
 package juego;
-	import java.awt.Image;
+	import java.awt.Color;
+import java.awt.Image;
 	import java.awt.Point;
 
 	import entorno.Entorno;
@@ -8,17 +9,25 @@ package juego;
 	public class HechizoAgua {
 		private int x;
 		private int y;
-		private Image fuego;
+		private Image agua;
+		private Image aguaExplosion;
 		boolean activo;
+		boolean estadoExplotar;
 		private double dx, dy;
-	    private int velocidad = 8;
+	    private int velocidad = 5;
+	    private int costoAgua;
+	    private int diametroExplosion;
+	    
 
 	    public HechizoAgua(int x, int y, Point objetivo) {
 	        this.x = x;
 	        this.y = y;	       
 			this.activo = false;
-			this.fuego = Herramientas.cargarImagen("imagenes/hechizo-agua.png");
-		
+			this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.gif");
+			this.aguaExplosion = Herramientas.cargarImagen("imagenes/agua-explosion.gif");
+			this.costoAgua = 0;		
+			this.estadoExplotar = false;
+			this.diametroExplosion = 30;
 	    }
 
 
@@ -35,8 +44,14 @@ package juego;
 	    }
 		public void dibujar(Entorno e) {
 		    if (activo) {
-		        e.dibujarImagen(this.fuego, this.x, this.y, 0,0.5);
+		        e.dibujarImagen(this.agua, this.x, this.y, 0,0.5);
 		    }
+		}
+		
+		public void dibujarExplosion(Entorno e, Point punto) {
+			if (estadoExplotar == true) {
+				e.dibujarImagen(this.aguaExplosion, punto.x, punto.y, 0, 0.5);
+			}
 		}
 
 		public void avanzar() {
@@ -50,8 +65,50 @@ package juego;
 	            this.activo = false;
 	        }
 	    }
-
 		
+		public int getCostoAgua() {
+			return costoAgua;
+		}
+
+
+
+		public void setCostoAgua(int costoAgua) {
+			this.costoAgua = costoAgua;
+		}
+
+
+
+		public int getDiametroExplosion() {
+			return diametroExplosion;
+		}
+
+
+
+		public void setDiametroExplosion(int diametroExplosion) {
+			this.diametroExplosion = diametroExplosion;
+		}
+
+
+
+		public void dibujarAreaExplosion(Entorno e, Point puntoExplosion) {
+			e.dibujarCirculo(puntoExplosion.x, puntoExplosion.y, diametroExplosion, null);
+		}
+		
+		public boolean isEstadoExplotar() {
+			return estadoExplotar;
+		}
+		
+		public void setEstadoExplotar(boolean estadoExplotar) {
+			this.estadoExplotar = estadoExplotar;
+		}
+
+		public void cambiarEstadoExplotar() {
+			estadoExplotar = true;
+		}
+		
+		public void cambiarEstado() {
+			this.activo = false;
+		}
 		
 			
 		public int getX() {
@@ -70,14 +127,16 @@ package juego;
 			this.y = y;
 		}
 
-		public Image getFuego() {
-			return fuego;
+		public Image getAgua() {
+			return agua;
 		}
 
-		public void setFuego(Image fuego) {
-			this.fuego = fuego;
+		public void setAgua(Image fuego) {
+			this.agua = agua;
 		}
-
+		public int costoAgua() {
+			return costoAgua;
+		}
 		
 	}
 
