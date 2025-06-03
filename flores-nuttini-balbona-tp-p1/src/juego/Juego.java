@@ -79,8 +79,8 @@ public class Juego extends InterfaceJuego
 		this.sonidoVictoria = Herramientas.cargarSonido("sonido/sonido3.wav");
 		this.imagenGameOver = Herramientas.cargarImagen("imagenes/game-over.png");
 		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
-//		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
-//		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
+		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
 		vidaMago = gondolf.getVida();
 		energiaMago = gondolf.getEnergiaMagica();
 
@@ -115,7 +115,7 @@ public class Juego extends InterfaceJuego
 		    if (!sonidoVictoriaReproducido) {
 		        sonidoVictoria.start();
 		        sonidoVictoriaReproducido = true;
-		        game_music.stop();
+		   
 		    }
 
 		    return; 
@@ -335,32 +335,21 @@ public class Juego extends InterfaceJuego
 		entorno.escribirTexto("Oleada:" + this.gestionadorOleadas.getNumOleadaActual(), 10, 20);
 		
 		//////////////////////FINALIZAR JUEGO Y MOSTRAR IMAGEN-SONIDO GAME-OVER)/////////////////////
-		if (this.gondolf.getVida() <= 0) {
-		    juegoTerminado = true;
-		    game_music.stop(); 
-		    return;
-		}
-<<<<<<< Updated upstream
-
-//		else if (this.cantMurcielagosMatados == 50) {
-//		}
-//		else if (this.cantMurcielagosMatados == 10) {
-//		}
-//		else if (this.cantMurcielagosMatados == 10) {
-//
-//		    juegoGanado = true;
-//		}
-		
-
 		if (this.gestionadorOleadas.getNumOleadaActual()-1 == this.gestionadorOleadas.getOleadaGanadora()) {
 			juegoGanado = true;
 			return;
-	}
-=======
-		else if (this.cantMurcielagosMatados == 10) {
-		    juegoGanado = true;
+		}else if(vidaMago <= 0) {
+			juegoTerminado = true;
+			game_music.stop();
+			return;
 		}
->>>>>>> Stashed changes
+
+
+
+		
+
+		
+
 
 	}
 		//////////////////////////////////////////////////////////////////////////////////////////////
