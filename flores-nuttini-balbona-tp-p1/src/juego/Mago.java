@@ -14,36 +14,16 @@ public class Mago {
 	private double tamañoMago;
 	private boolean direccion;				//IZQUIERDA O DERECHA
 	
-	
-	//hechizo de fuego
-	private int fuegoX;
-	private int fuegoY;
-	private boolean fuegoActivo;
-	private String direccionFuego;
-	
-	//hechizo de agua
-	private int aguaX;
-	private int aguaY;
-	private boolean aguaActivo;
-	private String direccionAgua;
-	
 	//imagenes
 	private Image izq;
 	private Image der;
-	private Image fuego;
-	private Image agua;
 	private Image arriba;
 	private Image abajo;
-	
-	private String hechizoSeleccionado = "fuego"; 
+	 
 	private String direccionHechizo = "abajo"; // puede ser: "arriba", "abajo", "izquierda", "derecha"
 
 	private int energiaMagica = 100;  // Energía inicial
 	private int vida = 100; // Vida inicial del mago
-
-	private final int costoFuego = 5;
-	private final int costoAgua = 0;
-
 
 	
 	
@@ -58,8 +38,6 @@ public class Mago {
 	this.abajo = Herramientas.cargarImagen("imagenes/mago-abajo.png");
 	this.izq = Herramientas.cargarImagen("imagenes/mago-der.png");
 	this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
-	this.fuego = Herramientas.cargarImagen("imagenes/hechizo-fuego.png");
-	this.agua = Herramientas.cargarImagen("imagenes/hechizo-agua.gif");
 	}
 	
 	public void dibujar(Entorno e) {
@@ -74,82 +52,8 @@ public class Mago {
 	    }
 	}
 
-	
-	
-	
-	
-	
-//////////////////////////////// HECHIZO FUEGO //////////////////////	
-	public void lanzarFuego() {
-	    if (!fuegoActivo && energiaMagica >= costoFuego) {
-	        this.fuegoX = this.x;
-	        this.fuegoY = this.y;
-	        this.direccionFuego = this.direccionHechizo;
-	        this.fuegoActivo = true;
-	        this.energiaMagica -= costoFuego;
-	    }
-	}
-	// El hechizo se lanza en la dirección en la que el mago mira.
-	public void variosFuegos(Entorno e) {
-	    if (fuegoActivo) {
-	        if (direccionFuego.equals("izquierda")) {
-	            fuegoX -= 5;
-	        } else if (direccionFuego.equals("derecha")) {
-	            fuegoX += 5;   //velocidad del hechizo
-	        } else if (direccionFuego.equals("arriba")) {
-	            fuegoY -= 5;
-	        } else if (direccionFuego.equals("abajo")) {
-	            fuegoY += 5;
-	        }
-
-	        e.dibujarImagen(this.fuego, fuegoX, fuegoY, 0, this.tamañoMago);
-
-	        // Si el hechizo se va fuera de la pantalla, se desactiva
-	        if (fuegoX < 0 || fuegoX > 590 || fuegoY < 0 || fuegoY > 600) {
-	            fuegoActivo = false;
-	        }
-	    }
-	}
-
-
-	
-////////////////////////////////////////////////////////////////////////	
-
-///////////////////////////////// HECHIZO AGUA ////////////////////////
-	public void lanzarAgua() {
-	    if (!aguaActivo && energiaMagica >= costoAgua) {
-	        this.aguaX = this.x;
-	        this.aguaY = this.y;
-	        this.direccionAgua = this.direccionHechizo;
-	        this.aguaActivo = true;
-	        this.energiaMagica -= costoAgua;
-	    }
-	}
-
-	public void variasAguas(Entorno e) {
-	    if (aguaActivo) {
-	        if (direccionAgua.equals("izquierda")) {
-	            aguaX -= 5;
-	        } else if (direccionAgua.equals("derecha")) {
-	            aguaX += 5;
-	        } else if (direccionAgua.equals("arriba")) {
-	            aguaY -= 5;
-	        } else if (direccionAgua.equals("abajo")) {
-	            aguaY += 5;
-	        }
-
-	        e.dibujarImagen(this.agua, aguaX, aguaY, 0, this.tamañoMago);
-
-	        if (aguaX < 0 || aguaX > 590 || aguaY < 0 || aguaY > 600) {
-	            aguaActivo = false;
-	        }
-	    }
-	}
-
 
 ///////////////////////////////////////////////////////////////////////////	
-
-	
 
 	
 	
@@ -164,18 +68,6 @@ public class Mago {
 		this.setVida(this.getVida() - dañoMurcielago);
 	}
 
-	public void seleccionarFuego() {
-	    this.hechizoSeleccionado = "fuego";
-	}
-
-	public void seleccionarAgua() {
-	    this.hechizoSeleccionado = "agua";
-	}
-
-	
-
-	
-	
 	public boolean dentroLimiteIzquierdo() {
 		return this.x - this.ancho/2 - 2 > 0;
 	}
@@ -242,13 +134,7 @@ public class Mago {
 	public int getY() {
 		return y;
 	}
-
-	public String getHechizoSeleccionado() {
-	    return this.hechizoSeleccionado;
-	}
-
 	
-
 	public void getDireccion(boolean direccion) {
 		this.direccion = direccion;
 	}
@@ -257,44 +143,5 @@ public class Mago {
 	    return this.energiaMagica;
 	}
 
-	public int getFuegoX() {
-	    return fuegoX;
-	}
-
-	public int getFuegoY() {
-	    return fuegoY;
-	}
-
-	public boolean estaFuegoActivo() {
-	    return fuegoActivo;
-	}
-
-	public void desactivarFuego() {
-	    this.fuegoActivo = false;
-	}
-
-	public int getAguaX() {
-	    return aguaX;
-	}
-
-	public int getAguaY() {
-	    return aguaY;
-	}
-
-	public boolean estaAguaActivo() {
-	    return aguaActivo;
-	}
-
-	public void desactivarAgua() {
-	    this.aguaActivo = false;
-	}
-
-
-
-	
-	
-	
-	
-	
 	
 }

@@ -98,6 +98,8 @@ public class Roca {
 			
 	}
 	
+	//////PUNTOS DIAGONELES DE LAS PIEDRAS//////
+	
 	public Point puntoDerechoSuperiorPiedra(Roca roca) {
 		Point punto = new Point(roca.getX() + roca.getAncho()/2, roca.getY() - roca.getAlto()/2);
 		return punto; 
@@ -115,9 +117,12 @@ public class Roca {
 		return punto; 
 	}
 	
+	//////LIMITE DE LAS PIEDRAS PARA QUE EL MAGO NO LAS ATRAVIESE//////
+	
 	public boolean limiteDerechoEnPiedra(Point punto, Roca [] rocas) {
 		for (int i = 0; i < rocas.length; i++) {
-		if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.y >= puntoDerechoSuperiorPiedra(rocas[i]).y && punto.y <= puntoDerechoInferiorPiedra(rocas[i]).y) {
+		if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x &&
+				punto.y >= puntoDerechoSuperiorPiedra(rocas[i]).y && punto.y <= puntoDerechoInferiorPiedra(rocas[i]).y) {
 			return true;
 			}
 		}
@@ -126,7 +131,8 @@ public class Roca {
 	}
 	public boolean limiteIzquierdoEnPiedra(Point punto, Roca [] rocas) {
 		for (int i = 0; i < rocas.length; i++) {
-			if (punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
+			if (punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x &&
+					punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
 				return true;
 			}
 		}
@@ -134,7 +140,8 @@ public class Roca {
 	}
 	public boolean limiteSuperiorEnPiedra(Point punto, Roca [] rocas) {
 		for (int i = 0; i < rocas.length; i++) {
-			if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
+			if (punto.x <= puntoDerechoSuperiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoSuperiorPiedra(rocas[i]).x &&
+					punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y) {
 				return true;
 			}
 		}
@@ -142,7 +149,8 @@ public class Roca {
 	}
 	public boolean limiteInferiorEnPiedra(Point punto, Roca [] rocas) {
 		for (int i = 0; i < rocas.length; i++) {
-			if (punto.x <= puntoDerechoInferiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoInferiorPiedra(rocas[i]).x && punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y ) {
+			if (punto.x <= puntoDerechoInferiorPiedra(rocas[i]).x && punto.x >= puntoIzquierdoInferiorPiedra(rocas[i]).x &&
+					punto.y <= puntoIzquierdoInferiorPiedra(rocas[i]).y && punto.y >= puntoIzquierdoSuperiorPiedra(rocas[i]).y ) {
 				return true;
 			}
 		}

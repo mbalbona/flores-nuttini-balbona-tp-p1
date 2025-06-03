@@ -16,8 +16,6 @@ public class Juego extends InterfaceJuego
 	private boolean enterPresionado = false;
 	private Point posMouse = new Point(0,0);
 	private boolean eligeHechizo = false;
-	private int energiaMagica = 100;
-	private int vidaMago = 100;
 	private double contadorFuego = 0;
 	private double contadorAgua = 0;
 	private Point puntoColision = new Point(0,0);
@@ -60,6 +58,9 @@ public class Juego extends InterfaceJuego
 	private int margenPantalla = 50;
 	private int margenAparicion = 50;
 	
+	private int vidaMago;
+	private int energiaMago;
+	
 	///CONSTRUCTOR
 	public Juego(){
 		
@@ -80,6 +81,9 @@ public class Juego extends InterfaceJuego
 		this.sonidoGameOver = Herramientas.cargarSonido("sonido/sonido2.wav");
 //		this.game_music = Herramientas.cargarSonido("sonido/sonido1.wav");
 //		this.game_music.loop(Clip.LOOP_CONTINUOUSLY);  
+		vidaMago = gondolf.getVida();
+		energiaMago = gondolf.getEnergiaMagica();
+
 		
 		///MOBS
 		this.murcielagos = new Murcielago[cantMurcielagosTotales];	
@@ -155,8 +159,6 @@ public class Juego extends InterfaceJuego
 		this.rocas.dibujar(entorno);
 		this.menu.dibujar(entorno);
 		this.gondolf.dibujar(entorno);
-		this.gondolf.variosFuegos(entorno);
-		this.gondolf.variasAguas(entorno);
 		
 		///////////////////GONDOLF, MOVERSE, LANZAR HECHIZOS///////////////////// 
 	
@@ -220,13 +222,13 @@ public class Juego extends InterfaceJuego
 			
 			hechizoFuego.avanzar();
 			if (eligeHechizo == true && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
-				energiaMagica -= hechizoFuego.costoFuego();
+				energiaMago -= hechizoFuego.costoFuego();
 			}
 			hechizoFuego.dibujar(entorno);
 
 			hechizoAgua.avanzar();
 			if (eligeHechizo == false && entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) && entorno.mouseX()<600) {
-				energiaMagica -= hechizoAgua.costoAgua();
+				energiaMago -= hechizoAgua.costoAgua();
 			}
 			hechizoAgua.dibujar(entorno);
 			if(hechizoAgua.getX() == posMouse.x && hechizoAgua.getY() == posMouse.y) {
@@ -253,7 +255,7 @@ public class Juego extends InterfaceJuego
 
 				//ENERGIA
 				entorno.cambiarFont(null, 30, Color.RED);
-				entorno.escribirTexto("Energía: " + energiaMagica, 615, 585);
+				entorno.escribirTexto("Energía: " + energiaMago, 615, 585);
 
 				//VIDA DEL MAGO
 				entorno.cambiarFont(null, 30, Color.GREEN);
