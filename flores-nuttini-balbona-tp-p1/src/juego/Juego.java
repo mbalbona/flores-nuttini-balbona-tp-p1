@@ -293,6 +293,7 @@ public class Juego extends InterfaceJuego
 		    game_music.stop(); 
 		    return;
 		}
+<<<<<<< Updated upstream
 
 //		else if (this.cantMurcielagosMatados == 50) {
 //		}
@@ -308,6 +309,11 @@ public class Juego extends InterfaceJuego
 			juegoGanado = true;
 			return;
 	}
+=======
+		else if (this.cantMurcielagosMatados == 10) {
+		    juegoGanado = true;
+		}
+>>>>>>> Stashed changes
 
 	}
 		//////////////////////////////////////////////////////////////////////////////////////////////
