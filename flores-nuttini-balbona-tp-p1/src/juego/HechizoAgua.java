@@ -1,5 +1,6 @@
 package juego;
-	import java.awt.Image;
+	import java.awt.Color;
+import java.awt.Image;
 	import java.awt.Point;
 
 	import entorno.Entorno;
@@ -15,6 +16,7 @@ package juego;
 		private double dx, dy;
 	    private int velocidad = 5;
 	    private int costoAgua;
+	    private int diametroExplosion;
 	    
 
 	    public HechizoAgua(int x, int y, Point objetivo) {
@@ -25,6 +27,7 @@ package juego;
 			this.aguaExplosion = Herramientas.cargarImagen("imagenes/agua-explosion.gif");
 			this.costoAgua = 0;		
 			this.estadoExplotar = false;
+			this.diametroExplosion = 30;
 	    }
 
 
@@ -62,6 +65,34 @@ package juego;
 	            this.activo = false;
 	        }
 	    }
+		
+		public int getCostoAgua() {
+			return costoAgua;
+		}
+
+
+
+		public void setCostoAgua(int costoAgua) {
+			this.costoAgua = costoAgua;
+		}
+
+
+
+		public int getDiametroExplosion() {
+			return diametroExplosion;
+		}
+
+
+
+		public void setDiametroExplosion(int diametroExplosion) {
+			this.diametroExplosion = diametroExplosion;
+		}
+
+
+
+		public void dibujarAreaExplosion(Entorno e, Point puntoExplosion) {
+			e.dibujarCirculo(puntoExplosion.x, puntoExplosion.y, diametroExplosion, null);
+		}
 		
 		public boolean isEstadoExplotar() {
 			return estadoExplotar;

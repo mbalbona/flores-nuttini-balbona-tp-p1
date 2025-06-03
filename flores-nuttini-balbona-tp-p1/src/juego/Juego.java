@@ -234,7 +234,8 @@ public class Juego extends InterfaceJuego
 			}
 
 			if(hechizoFuego.estadoExplotar == true && contadorFuego <= 66.00) {
-				hechizoFuego.dibujarExplosion(entorno, puntoColision);
+				//hechizoFuego.dibujarAreaExplosion(entorno, puntoColision);
+				hechizoFuego.dibujarExplosion(entorno, puntoColision);				
 				contadorFuego++;
 			}else{
 				hechizoFuego.setEstadoExplotar(false);
@@ -242,7 +243,8 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if(hechizoAgua.estadoExplotar == true && contadorAgua <= 20.00) {
-				hechizoAgua.dibujarExplosion(entorno, puntoColision);
+				//hechizoAgua.dibujarAreaExplosion(entorno, puntoColision);
+				hechizoAgua.dibujarExplosion(entorno, puntoColision);				
 				contadorAgua++;
 			}else{
 				hechizoAgua.setEstadoExplotar(false);
@@ -288,7 +290,9 @@ public class Juego extends InterfaceJuego
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		chequearColisionesConHechizos(); //LLAMAMOS AL METODO PARA ELIMINAR MURCIELAGOS ANTES DE DIBUJAR
-
+		if (hechizoAgua.estadoExplotar == true || hechizoFuego.estadoExplotar == true) {
+			chequearColisionConExplosion();
+		}
 		
 		//////////////////////CICLO PARA DIBUJAR LOS MURCIELAGOS///////////////////////
 		for (int i = 0; i < cantMurcielagosTotales; i++) {
@@ -444,6 +448,41 @@ public class Juego extends InterfaceJuego
 	            }
 	        }
 	    }
+	}
+	
+	private boolean colisionConExplosionFuego(Murcielago m) {
+		int dx = Math.abs(m.getX()-puntoColision.x);
+		int dy = Math.abs(m.getY()-puntoColision.y);
+		double radio = hechizoFuego.getDiametroExplosion()/2;
+		if(dx * dx + dy * dy < radio * radio) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean colisionConExplosionAgua(Murcielago m) {
+		int dx = Math.abs(m.getX()-puntoColision.x);
+		int dy = Math.abs(m.getY()-puntoColision.y);
+		double radio = hechizoAgua.getDiametroExplosion()/2;
+		if(dx * dx + dy * dy < radio * radio) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void chequearColisionConExplosion() {
+		for (int i = 0; i < murcielagos.length; i++) {
+	        Murcielago murcielago = murcielagos[i];
+	        if (murcielago != null && murcielago.getEstaVivo()) {
+	            if (colisionConExplosionFuego(murcielago) == true) {
+	            	murcielagos[i] = null; // lo eliminás del arreglo
+	                cantMurcielagosMatados++;
+	            }else if (colisionConExplosionAgua(murcielago)) {
+		            	murcielagos[i] = null; // lo eliminás del arreglo
+		                cantMurcielagosMatados++;
+	            }
+	        }
+		}
 	}
 	
 

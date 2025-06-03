@@ -1,5 +1,6 @@
 package juego;
-	import java.awt.Image;
+	import java.awt.Color;
+import java.awt.Image;
 	import java.awt.Point;
 
 	import entorno.Entorno;
@@ -15,6 +16,7 @@ package juego;
 		private double dx, dy;
 	    private int velocidad = 5;
 	    private int costoFuego;
+	    private int diametroExplosion;
 
 	    public HechizoFuego(int x, int y, Point objetivo) {
 	        this.x = x;
@@ -24,6 +26,7 @@ package juego;
 			this.fuegoExplosion = Herramientas.cargarImagen("imagenes/fuego-explosion.gif");
 			this.estadoExplotar = false;
 			this.costoFuego = 5;
+			this.diametroExplosion = 70;
 	    }
 
 
@@ -50,14 +53,10 @@ package juego;
 			}
 		}
 		
-		public void restauraExplosion() {
-			this.fuegoExplosion = Herramientas.cargarImagen("imagenes/fuego-explosion.gif");
-		}
-		
+
 		public boolean isEstadoExplotar() {
 			return estadoExplotar;
 		}
-
 
 
 		public void setEstadoExplotar(boolean estadoExplotar) {
@@ -65,10 +64,49 @@ package juego;
 		}
 
 
-
 		public void cambiarEstadoExplotar() {
 			estadoExplotar = true;
 		}
+		
+		public void dibujarAreaExplosion(Entorno e, Point puntoExplosion) {
+			e.dibujarCirculo(puntoExplosion.x, puntoExplosion.y, diametroExplosion, null);
+		}
+		
+		public int getVelocidad() {
+			return velocidad;
+		}
+
+
+
+		public void setVelocidad(int velocidad) {
+			this.velocidad = velocidad;
+		}
+
+
+
+		public int getCostoFuego() {
+			return costoFuego;
+		}
+
+
+
+		public void setCostoFuego(int costoFuego) {
+			this.costoFuego = costoFuego;
+		}
+
+
+
+		public int getDiametroExplosion() {
+			return diametroExplosion;
+		}
+
+
+
+		public void setDiametroExplosion(int diametroExplosion) {
+			this.diametroExplosion = diametroExplosion;
+		}
+
+
 
 		public void avanzar() {
 	        if (!activo) return;
