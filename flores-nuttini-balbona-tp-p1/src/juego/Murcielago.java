@@ -14,11 +14,6 @@ public class Murcielago {
 	private boolean estaVivo;
 	Image imgMurcielago;
 	
-	///PROPIEDADES PARA LA SEPARACION
-	private double radioSeparacion = 40; //Radio alrededor del murciélago para detectar otros murcielagos
-	private double fuerzaSeparacion = 0.8; //Qué tan fuerte es la repulsión
-	private double fuerzaPersecucion = 1.0; //Qué tan fuerte es la atracción hacia el mago
-	
 	public Murcielago() {
 		this.x = -100;
 		this.y = -100;
