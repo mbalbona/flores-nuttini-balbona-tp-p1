@@ -28,16 +28,16 @@ public class Mago {
 	
 	
 	public Mago(int alto, int ancho, int x, int y){
-	this.x = x;
-	this.y = y;
-	this.margen = 20;
-	this.alto = alto;
-	this.ancho = ancho;
-	this.tamañoMago = 0.3;		//tamaño de la imagen
-	this.arriba	= Herramientas.cargarImagen("imagenes/mago-arriba.png");
-	this.abajo = Herramientas.cargarImagen("imagenes/mago-abajo.png");
-	this.izq = Herramientas.cargarImagen("imagenes/mago-der.png");
-	this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
+		this.x = x;
+		this.y = y;
+		this.margen = 20;
+		this.alto = alto;
+		this.ancho = ancho;
+		this.tamañoMago = 0.3;		//tamaño de la imagen
+		this.arriba	= Herramientas.cargarImagen("imagenes/mago-arriba.png");
+		this.abajo = Herramientas.cargarImagen("imagenes/mago-abajo.png");
+		this.izq = Herramientas.cargarImagen("imagenes/mago-der.png");
+		this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
 	}
 	
 	
