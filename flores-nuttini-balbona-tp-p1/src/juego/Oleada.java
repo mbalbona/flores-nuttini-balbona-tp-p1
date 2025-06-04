@@ -16,11 +16,13 @@ public class Oleada {
 	private int cantMurcielagosIniciales; 		///En la primera oleada apareceran N murcielagos
 	private int incrementoMurcielagosPorOleada; ///y cada oleada se iran incrementando
 	
-	private static int oleadaGanadora = 4;     ///Oleada que tiene que alcanzar el jugador para ganar
+	private static int oleadaGanadora = 2;     ///Oleada que tiene que alcanzar el jugador para ganar
 	
 	private int dañoBaseMurcielago = 10;     ///Daño inicial en la primera oledada
 	private static int incrementoDañoPorOleada = 5; ///Cuanto aumenta el daño por oleada
 	private int dañoActualMurcielago;
+	
+	 
 	
 	public Oleada(int tiempoDescansoEntreOleadas, int cantMurcielagosIniciales, int incrementoMurcielagos) {
 		this.tiempoDescansoEntreOleadas = tiempoDescansoEntreOleadas;

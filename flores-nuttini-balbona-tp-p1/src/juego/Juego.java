@@ -96,7 +96,7 @@ public class Juego extends InterfaceJuego
 		
 		////INICIALIZAMOS GESTOR DE OLEADAS
 		int tiempoDescanso = 300;
-		int murcielagosBase = 5;
+		int murcielagosBase = 10;
 		int incrementoMurcielagos = 2;
 		this.gestionadorOleadas = new Oleada(tiempoDescanso, murcielagosBase, incrementoMurcielagos);
 		
@@ -108,7 +108,7 @@ public class Juego extends InterfaceJuego
 	//1 SEGUNDO = 100 TICKS
 	public void tick()
 	{
-		
+		//DIBUJAR LA IMAGEN DE VICTORIA Y PAUSAR SONIDO DE INICIO CUANDO GANA
 		if (juegoGanado) {
 		    entorno.dibujarImagen(imagenVictoria, entorno.ancho() / 2, entorno.alto() / 2, 0);
 		    
@@ -132,6 +132,7 @@ public class Juego extends InterfaceJuego
 
 		    return; //COLOCAMOS ARRIBA DE TODO PARA QUE NO SE SIGAN DIBUJANDO MAS LOS PERSONAJES
 		}
+		///////////////////////////////////////////////////////////////////////////////////
 		
 		/////////////////////////MENU DE JUEGO INICIO//////////////////////////////////////
 		if (enMenu) {
@@ -160,7 +161,7 @@ public class Juego extends InterfaceJuego
 		this.menu.dibujar(entorno);
 		this.gondolf.dibujar(entorno);
 		
-		///////////////////GONDOLF, MOVERSE, LANZAR HECHIZOS///////////////////// 
+		///////////////////ACA GONDOLF SE MUEVE,LANZA HECHIZOS///////////////////// 
 	
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			  gondolf.getDireccion(false); // mirar a la derecha
@@ -190,7 +191,7 @@ public class Juego extends InterfaceJuego
 			      this.gondolf.moverAbajo();
 			  }
 			}
-	
+			///////////////////////ELEGIR QUE HECHIZO LANZAR CON COORDENADAS MOUSE//////////////////////
 			if (entorno.mousePresente() && entorno.sePresionoBoton(1) && entorno.mouseX() >= 600) {
 			    eligeHechizo = menu.detectarClick(entorno.mouseX(), entorno.mouseY());
 			}
@@ -446,7 +447,8 @@ public class Juego extends InterfaceJuego
 	        }
 	    }
 	}
-	
+	//CUANDO HACE CONTACTO CON LOS VAMPIROS HACE UNA EXPLOSION QUE PERMITE QUE ELIMINE A LOS QUE ESTEN
+	//A SU ALREDEDOR
 	private boolean colisionConExplosionFuego(Murcielago m) {
 		int dx = Math.abs(m.getX()-puntoColision.x);
 		int dy = Math.abs(m.getY()-puntoColision.y);
@@ -456,7 +458,7 @@ public class Juego extends InterfaceJuego
 		}
 		return false;
 	}
-	
+	//COLISION AGUA CON VAMPIROS
 	private boolean colisionConExplosionAgua(Murcielago m) {
 		int dx = Math.abs(m.getX()-puntoColision.x);
 		int dy = Math.abs(m.getY()-puntoColision.y);

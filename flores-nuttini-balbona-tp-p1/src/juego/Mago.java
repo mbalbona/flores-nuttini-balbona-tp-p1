@@ -10,7 +10,7 @@ public class Mago {
 	private int ancho;
 	private int x;
 	private int y;
-	private int margen;
+	private int margen;  // evita que el mago se salga de la pantalla
 	private double tamañoMago;
 	private boolean direccion;				//IZQUIERDA O DERECHA
 	
@@ -40,6 +40,8 @@ public class Mago {
 	this.der = Herramientas.cargarImagen("imagenes/mago-izq.png");
 	}
 	
+	
+	//DIBUJAR AL MAGO SEGUN LA POSICION QUE MIRE
 	public void dibujar(Entorno e) {
 	    if (direccionHechizo.equals("izquierda")) {
 	        e.dibujarImagen(this.der, this.x, this.y, 0, this.tamañoMago);
@@ -64,7 +66,8 @@ public class Mago {
 	    this.vida = vida;
 	}
 	
-	public void quitarVida(int dañoMurcielago) {
+	
+	public void quitarVida(int dañoMurcielago) { 
 		this.setVida(this.getVida() - dañoMurcielago);
 	}
 
@@ -92,15 +95,16 @@ public class Mago {
 	public int limiteInferior() {
 		return this.y + this.alto / 2 ;
 	}
-	
+	//////PARA QUE NO SALGA DE LA PANTALLA Y NO PASE POR ABAJO DE MENU////////////
 	public boolean dentroLimiteSuperior() {
-	    return this.limiteSuperior() > 0 + this.margen;  //con esto evito que sobresalga el mago
+	    return this.limiteSuperior() > 0 + this.margen; 
 	}
 
 	public boolean dentroLimiteInferior() {
-	    return this.limiteInferior() < 600 - this.margen; // altura de la pantalla
+	    return this.limiteInferior() < 600 - this.margen; 
 	}
 
+	//////////////////////////////////////////////////////////////////////////////
 
 	public void moverDerecha() {
 	    this.x += 2;
